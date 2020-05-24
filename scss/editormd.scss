@@ -2,6 +2,8 @@
 
 @import "lib/variables";
 @import "lib/prefixes";
+
+@import "font-awesome";
         
 .editormd {
     width: 90%;
@@ -12,7 +14,9 @@
     position: relative;
     margin-bottom: 15px;
     border: 1px solid $borderColor;
-    font-family: "Meiryo UI", "Microsoft YaHei", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, "Monaco", monospace, Tahoma, STXihei, "华文细黑", STHeiti, "Helvetica Neue", "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
+    font-family: "YaHei Consolas Hybrid", Consolas, monospace;   
+    // font-family: PingFang SC, Hiragino Sans GB, Microsoft Yahei, WenQuanYi Micro Hei, sans-serif;
+    // font-family: "Meiryo UI", "Microsoft YaHei", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, "Monaco", monospace, Tahoma, STXihei, "华文细黑", STHeiti, "Helvetica Neue", "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
 
     *, *:before, *:after {
         @include box-sizing(border-box);

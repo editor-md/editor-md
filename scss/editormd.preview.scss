@@ -2,12 +2,17 @@
 
 @import "lib/variables";
 @import "lib/prefixes";
-@import "font-awesome";
+
 
 @import "editormd.logo";
 
 // github-markdown.css
 @import "github-markdown";  
+
+.MathJax {
+    outline:0;
+    font-size: 16px;
+}
 
 #{$prefix}preview-container, #{$prefix}html-preview {
     text-align: left;
@@ -45,14 +50,19 @@
 
     code {
         border: 1px solid $borderColor;
-        background: #f6f6f6;
-        padding: 3px;
+        background: #dadada; 
+        // background: #f6f6f6;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        padding-left: 2px;
+        padding-right: 2px;
         border-radius: 3px;
         font-size: 14px;
     }
 
     pre {
         border: 1px solid $borderColor;
+        // background: #dadada;
         background: #f6f6f6;
         padding: 10px;
         @include border-radius(3px);
@@ -62,8 +72,9 @@
         }
     }
     
-    pre, code, kbd {        
-        font-family:  "YaHei Consolas Hybrid", Consolas, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace;
+    pre, code, kbd {
+        font-family: "YaHei Consolas Hybrid", Consolas, monospace;   
+        // font-family:  "YaHei Consolas Hybrid", Consolas, monospace, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace;
     }
 
     table thead tr {
@@ -111,6 +122,8 @@
 //Pretty printing styles. Used with prettify.js.
 
 @import "prettify";
+@import "details";
+@import "clipboard";
 
 #{$prefix}preview-container, #{$prefix}html-preview {
     pre.prettyprint { 
