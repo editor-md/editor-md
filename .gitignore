@@ -23,7 +23,7 @@ css/*.map
 
 to-html/Editor.md/
 to-html/dist/
-lib/
+./lib/
 
 # Mac OS
 .DS_Store
