@@ -10,7 +10,7 @@
     <body style="overflow:scroll; ">
             <div id="editormd-view" style = "max-width:1280px; margin:auto;">
                 <textarea id="append-test" style="display:none; ">
-                    <?php require("./out1.md"); ?>
+                    <?php require("./test.md"); ?>
                 </textarea>
             </div>
     </body>

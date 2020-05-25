@@ -532,3 +532,5 @@ v1.2.0 主要更新：
 - 改进：根据指针在当前行的位置更合理插入标题和水平线 [#104](https://github.com/pandao/editor.md/pull/104)；
 - 改进：调整了字体，优先显示 `"YaHei Consolas Hybrid", Consolas`；
 - 改进：修复在 Bootstrap 下的兼容性问题，即因为 box-sizing 写错位置导致的弹出层宽度等错位问题 [#107](https://github.com/pandao/editor.md/issues/107)；
+
+### v2.0

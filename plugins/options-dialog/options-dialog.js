@@ -46,7 +46,7 @@
             var dialogLang  = lang.dialog.options;
 
             var dialogContent = [
-                "<div class=\"editormd-form\" style=\"padding: 13px 0;height: 120px;overflow: hidden;overflow-y: auto;\">",
+                "<div class=\"editormd-form\" style=\"padding: 6px 0;height: auto;overflow: hidden;overflow-y: auto;\">",
                 // "<h4 style=\"margin: 0 0px 10px;\">" + dialogLang.readTitle + "</h4>",
                 // "<label style=\"width:94px;\">" + dialogLang.markdownStyle + "</label>",
                 // "<div class=\"fa-btns\" id=\"read-preview-area-markdown-style\"></div><br/>",
@@ -83,7 +83,7 @@
                     name       : dialogName,
                     title      : dialogLang.title,
                     width      : 360,
-                    height     : 240,
+                    height     : 180,
                     mask       : settings.dialogShowMask,
                     drag       : settings.dialogDraggable,
                     content    : dialogContent,

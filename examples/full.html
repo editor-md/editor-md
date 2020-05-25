@@ -141,12 +141,57 @@
         <script src="../js/plugins.min.js"></script>   
         <script src="../js/editormd.min.js"></script>   
 
+<script>
 
+
+function initPasteDragImg(Editor){
+    var doc = document.getElementById(Editor.id)
+    doc.addEventListener('paste', function (event) {
+        var items = (event.clipboardData || window.clipboardData).items;
+        var file = null;
+        if (items && items.length) {
+            // 搜索剪切板items
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    file = items[i].getAsFile();
+                    break;
+                }
+            }
+        } else {
+            console.log("当前浏览器不支持");
+            return;
+        }
+        if (!file) {
+            console.log("粘贴内容非图片");
+            return;
+        }
+        Editor.uploadImg.push(file);
+        Editor.executePlugin("imageDialog", "image-dialog/image-dialog");
+    });
+
+    var dashboard = document.getElementById(Editor.id)
+    dashboard.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    })
+    dashboard.addEventListener("dragenter", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    })
+    dashboard.addEventListener("drop", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var files = this.files || e.dataTransfer.files;
+        console.log(files);
+        Editor.uploadImg.push(files[0]);
+        Editor.executePlugin("imageDialog", "image-dialog/image-dialog");
+     })
+}
+
+</script>
         <script type="text/javascript">
             var testEditor;
-            
             $(function() {
-                
                 $.get('test.md', function(md){
                     testEditor = editormd("test-editormd", {
                         width: "98%",
@@ -176,9 +221,12 @@
                         //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
                         //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
                         imageUpload : true,
-                        imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                        imageUploadURL : "./php/upload.php",
+                        fileUpload  : true,
+                        // imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                        uploadURL : "http://192.168.2.100:3000/api/image/upload",
+                        // crossDomainUpload : true,
                         onload : function() {
+                            // initPasteDragImg(this);
                             // console.log('onload', this);
                             //this.fullscreen();
                             //this.unwatch();
@@ -248,7 +296,6 @@
                 });
             });
         </script>
-
-
     </body>
 </html>
+

@@ -271,7 +271,7 @@ function build() {
            gulp.src("./js/*.min.js").pipe(gulp.dest("./build/js")),
            gulp.src("./fonts/**/*").pipe(gulp.dest("./build/fonts")),
            gulp.src("./images/**/*").pipe(gulp.dest("./build/images")),
-           gulp.src("./plugins/**/*").pipe(gulp.dest("./build/plugins")),
+           gulp.src(["./plugins/**/*", "!./plugins/**/*.js"]).pipe(gulp.dest("./build/plugins")),
            gulp.src("./plugins/**/*.js")
            .pipe(uglify())
            .pipe(gulp.dest("./build/plugins")),

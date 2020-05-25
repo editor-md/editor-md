@@ -57,23 +57,19 @@
             "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
             "h1", "h2", "h3", "h4", "h5", "h6", "|",
             "list-ul", "list-ol", "hr", "|",
-            "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
+            "link", "reference-link", "image", "file", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
             "goto-line", "watch", "preview", "fullscreen", "clear", "|",
             "help", "info", "options"
         ],
         simple : [
             "undo", "redo", "|",
-            // "bold", "del", "italic", "quote", "uppercase", "lowercase", "|",
-            // "h1", "h2", "h3", "h4", "h5", "h6", "|",
-            // "list-ul", "list-ol", "hr", "|",
-            "bold", "del", "italic", "quote", "table", "image", "|",
+            "bold", "del", "italic", "quote", "table", "image", "file", "|",
             "watch", "preview", "fullscreen", "|",
             "help", "options"
         ],
         mini : [
             "undo", "redo", "|",
-            "watch", "preview", "|",
-            "help"
+            "image", "file", "preview", 
         ]
     };
 
@@ -113,7 +109,7 @@
 		styleSelectedText    : true,
         matchWordHighlight   : true,           // options: true, false, "onselected"
         styleActiveLine      : true,           // Highlight the current line
-        dialogLockScreen     : true,           // 设置弹出层对话框不锁屏，全局通用，默认为true
+        dialogLockScreen     : false,           // 设置弹出层对话框不锁屏，全局通用，默认为true
         dialogShowMask       : true,           // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
         dialogDraggable      : true,           // 设置弹出层对话框不可拖动，全局通用，默认为true
         dialogMaskBgColor    : "#fff",         // 设置透明遮罩层的透明度，全局通用，默认值为0.1
@@ -136,11 +132,12 @@
         onpreviewscroll      : function() {},
 
         imageUpload          : false,
+        fileUpload           : false,
         imageFormats         : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-        imageUploadURL       : "",
-        imageLazyLoad        : true,     // 图片是否需要懒加载优化，默认为true
+        uploadURL            : "",
         crossDomainUpload    : false,
         uploadCallbackURL    : "",
+        imageLazyLoad        : true,     // 图片是否需要懒加载优化，默认为true
 
         toc                  : true,           // Table of contents
         tocm                 : false,           // Using [TOCM], auto create ToC dropdown menu
@@ -197,6 +194,7 @@
             link             : "fa-link",
             "reference-link" : "fa-anchor",
             image            : "fa-picture-o",
+            file             : "fa-upload",
             code             : "fa-code",
             "preformatted-text" : "fa-file-code-o",
             "code-block"     : "fa-file-code-o",
@@ -244,6 +242,7 @@
                 link             : "链接",
                 "reference-link" : "引用链接",
                 image            : "添加图片",
+                file             : "上传附件",
                 code             : "行内代码",
                 "preformatted-text" : "预格式文本 / 代码块（缩进风格）",
                 "code-block"     : "代码块（多语言风格）",
@@ -293,7 +292,16 @@
                     uploadButton     : "本地上传",
                     imageURLEmpty    : "错误：图片地址不能为空。",
                     uploadFileEmpty  : "错误：上传的图片不能为空。",
-                    formatNotAllowed : "错误：只允许上传图片文件，允许上传的图片文件格式有："
+                    formatNotAllowed : "错误：只允许上传图片文件，允许上传的图片文件格式有：",
+                    imageOverSize    : "错误：只允许上传16MB及以下的图片文件。"
+                },
+                file : {
+                    title : "上传附件",
+                    url   : "附件地址",
+                    alt   : "附件描述",
+                    uploadButton : "本地上传",
+                    fileURLEmpty : "错误：附件地址不能唯恐。",
+                    uploadFileEmpty : "错误：上传的附件不能唯恐。",
                 },
                 preformattedText : {
                     title             : "添加预格式文本或代码块",
@@ -331,6 +339,7 @@
     var timer, flowchartTimer, elapsedSaveTime = 500, cacheKeymaps;
 
     editormd.prototype    = editormd.fn = {
+
         state : {
             watching   : false,
             loaded     : false,
@@ -359,6 +368,10 @@
             var _this            = this;
             var classPrefix      = this.classPrefix  = editormd.classPrefix;
             var settings         = this.settings     = $.extend(true, editormd.defaults, options);
+
+            // 图片/文件 上传缓冲区
+            this.uploadImg  = new Array();
+            this.uploadFile = new Array();
 
             id                   = (typeof id === "object") ? settings.id : id;
 
@@ -474,7 +487,55 @@
             {
                 this.loadQueues();
             }
+            
+            var initPasteDrag = function(Editor) {
+                var doc = document.getElementById(Editor.id);
+                var upload = function(file) {
+                    var suffix = file.type.split("/");
+                    suffix = suffix[suffix.length - 1];
+                    if ($.inArray(suffix, Editor.settings.imageFormats) !== -1) {
+                        Editor.uploadImg.push(file);
+                        Editor.executePlugin("imageDialog", "image-dialog/image-dialog");    
+                    } else {
+                        Editor.uploadFile.push(file);
+                        Editor.executePlugin("fileDialog", "file-dialog/file-dialog");
+                    }
+                }
+                doc.addEventListener('paste', function (event) {
+                    var items = (event.clipboardData || window.clipboardData).items;
+                    var file = null;
+                    if (items && items.length) {
+                        file = items[0].getAsFile();
+                    } 
+                    if (!file) {
+                        console.log("当前浏览器不支持");
+                        return;
+                    }
+                    upload(file);
+                });
 
+                var dashboard = document.getElementById(Editor.id);
+                dashboard.addEventListener("dragover", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+                dashboard.addEventListener("dragenter", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+                dashboard.addEventListener("drop", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var files = this.files || e.dataTransfer.files;
+                    var file = files[0];
+                    if (!file) {
+                        console.log("当前浏览器不支持");
+                        return;
+                    }
+                    upload(file);
+                });
+            };
+            initPasteDrag(this); 
             return this;
         },
 
@@ -2927,7 +2988,7 @@
             }
             else
             {
-                $.proxy(editormd.loadPlugins[name], this)(cm);
+                $.proxy(editormd.loadPlugins[name], this)(cm, 2);
             }
 
             return this;
@@ -3317,6 +3378,10 @@
             this.executePlugin("imageDialog", "image-dialog/image-dialog");
         },
 
+        file : function() {
+            this.executePlugin("fileDialog", "file-dialog/file-dialog");
+        },
+
         code : function() {
             var cm        = this.cm;
             var cursor    = cm.getCursor();
@@ -3633,7 +3698,6 @@
         var footNoteDefReg  = regexs.footNoteDef;
 
         markedRenderer.emoji = function(text) {
-
             text = text.replace(editormd.regexs.emojiDatetime, function($1) {
                 return $1.replace(/:/g, "&#58;");
             });
@@ -3695,12 +3759,10 @@
                     }
                 });
             }
-
             return text;
         };
 
         markedRenderer.atLink = function(text) {
-
             if (atLinkReg.test(text))
             {
                 if (settings.atLink)
@@ -3720,10 +3782,8 @@
                         return (!$2 && $.inArray($5, "jpg|jpeg|png|gif|webp|ico|icon|pdf".split("|")) < 0) ? "<a target=\"_blank\" href=\"mailto:" + $1 + "\">"+$1+"</a>" : $1;
                     });
                 }
-
                 return text;
             }
-
             return text;
         };
 
@@ -3761,7 +3821,6 @@
         };
 
         markedRenderer.link = function (href, title, text) {
-
             if (this.options.sanitize) {
                 try {
                     var prot = decodeURIComponent(unescape(href)).replace(/[^\w:]/g,"").toLowerCase();
@@ -3797,12 +3856,10 @@
             }
 
             out += ">" + text + "</a>";
-
             return out;
         };
 
         markedRenderer.heading = function(text, level, raw, line) {
-
             var linkText       = text;
             var hasLinkReg     = /\s*\<a\s*target=\"_blank\"\s*href\=\"(.*)\"\s*([^\>]*)\>(.*)\<\/a\>\s*/;
             var getLinkTextReg = /\s*\<a\s*([^\>]+)\>([^\>]*)\<\/a\>\s*/g;
@@ -3882,9 +3939,9 @@
             if (typeof(line) != "undefined") {
                 dsl = " data-source-line=\"" + line;
             }
-
+            return "<p>" + text + "</p>";
             return (isToC) ? ( (isToCMenu) ? "<div class=\"editormd-toc-menu\">" + tocHTML + "</div><br/>" : tocHTML )
-                           : ( (pageBreakReg.test(text)) ? this.pageBreak(text) : "<p" + isTeXAddClass + dsl +  "\">" + this.atLink(this.emoji(this.footNote(text))) + "</p>\n" );
+                           : ( (pageBreakReg.test(text)) ? this.pageBreak(text) : "<p" + isTeXAddClass + dsl +  "\">" + this.atLink(this.emoji(this.footNote(text))) + "</p><br/>" );
         };
 
         markedRenderer.code = function (code, lang, escaped) {
@@ -4355,7 +4412,9 @@
         }
 
         if (settings.imageLazyLoad) {
-            ImgLazyLoad();
+            if (typeof ImgLazyLoad !== undefined) {
+                ImgLazyLoad();
+            }
         }
     
         div.getMarkdown = function() {
