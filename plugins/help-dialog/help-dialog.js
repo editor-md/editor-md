@@ -34,7 +34,7 @@
 					name       : dialogName,
 					title      : dialogLang.title,
 					width      : 840,
-					height     : 540,
+					height     : 520,
 					mask       : settings.dialogShowMask,
 					drag       : settings.dialogDraggable,
 					content    : dialogContent,

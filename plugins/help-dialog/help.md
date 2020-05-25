@@ -81,17 +81,18 @@
 ```html
 <details class = 'info|danger|success|note' [open]>
 <summary></summary>
-
-
 </details>
 ```
 
 ##### image reference
 
 ```html
-<center>
-<img class = "lazy-load-img" style="display:block; margin:0px auto; border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"
-    src="" data-src="">
-</center>
+<div style="display:inline-block">
+	<img class = "lazy-load-img" style="border-radius:.3125em;
+	box-shadow:0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"
+	width = 590px; height = 484px
+	src="" data-src=""><br>
+	<div style="color:orange; border-bottom:1px solid #d9d9d9;
+	display:inline-block;color:#999;padding:2px"></div>
+</div>
 ```
