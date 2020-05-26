@@ -1,3 +1,4 @@
+
 function ImgLazyLoad() {
 	var lazyImages = [].slice.call(document.querySelectorAll(".lazy-load-img"));
 	if ("IntersectionObserver" in window) {
@@ -18,6 +19,10 @@ function ImgLazyLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-	ImgLazyLoad();
 	snipperAction();
-});
+	ImgLazyLoad();
+})
+
+
+
+

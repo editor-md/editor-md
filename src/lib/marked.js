@@ -1806,7 +1806,7 @@
         return text;
       }
 
-    var out = '<img class = "lazy-load-img" src="" data-src="' + href + '" alt="图片加载中..."';
+    var out = '<img class = "lazy-load-img" src="#" data-src="' + href + '" alt="图片加载中..."';
 
       if (title) {
         out += ' title="' + title + '"';
