@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-05-25
+ * @updateTime  2020-05-26
  */
 
 /**
@@ -5453,7 +5453,7 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
             }
             else
             {
-                $.proxy(editormd.loadPlugins[name], this)(cm, 2);
+                $.proxy(editormd.loadPlugins[name], this)(cm);
             }
 
             return this;
@@ -6404,9 +6404,8 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
             if (typeof(line) != "undefined") {
                 dsl = " data-source-line=\"" + line;
             }
-            return "<p>" + text + "</p>";
             return (isToC) ? ( (isToCMenu) ? "<div class=\"editormd-toc-menu\">" + tocHTML + "</div><br/>" : tocHTML )
-                           : ( (pageBreakReg.test(text)) ? this.pageBreak(text) : "<p" + isTeXAddClass + dsl +  "\">" + this.atLink(this.emoji(this.footNote(text))) + "</p><br/>" );
+                           : ( (pageBreakReg.test(text)) ? this.pageBreak(text) : "<p" + isTeXAddClass + dsl +  "\">" + this.atLink(this.emoji(text)) + "</p>\n" );
         };
 
         markedRenderer.code = function (code, lang, escaped) {
