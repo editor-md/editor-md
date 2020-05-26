@@ -262,8 +262,9 @@ function cm_lib() {
 }
 
 function cleanBuild() {
-    return gulp.src("./build")
-    .pipe(clean());
+    return gulp.src("./build").pipe(clean()),
+           gulp.src("./examples/editor.md").pipe(clean());
+        //    gulp.src("../dup4.blog/client/public/editor.md").pipe(clean());
 }
 
 function build() {
@@ -276,6 +277,12 @@ function build() {
            .pipe(uglify())
            .pipe(gulp.dest("./build/plugins")),
            gulp.src("./lib/**/*").pipe(gulp.dest("./build/lib"));
+           
+}
+
+function put() {
+    return gulp.src("./build/**/*").pipe(gulp.dest("./examples/editor.md")),
+           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/client/public/editor.md"));
 }
 
 exports.css = css;
@@ -286,6 +293,8 @@ exports.cm_lib = cm_lib;
 exports.cleanBuild = cleanBuild;
 exports.build = build;
 exports.pluginJs = pluginJs;
+exports.put = put;
+exports.gao = gulp.series(gulp.parallel(css, js, pluginJs), build, put);
 exports.default = gulp.parallel(css, js);
 
 

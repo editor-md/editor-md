@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-05-24
+ * @updateTime  2020-05-26
  */
 
 @charset "UTF-8";
@@ -4436,7 +4436,7 @@ li.L9 {
 .snippet .fullscreen-overlay-enabled.dark-theme .tooltipped.tooltipped-w:before {
   border-left-color: rgba(255, 255, 255, 0.8); }
 
-.snippet .btn {
+.snippet .snippet-copy-btn {
   position: relative;
   display: inline-block;
   padding: 6px 12px;
@@ -4457,43 +4457,43 @@ li.L9 {
   user-select: none;
   -webkit-appearance: none; }
 
-.snippet .btn i {
+.snippet .snippet-copy-btn i {
   font-style: normal;
   font-weight: 500;
   opacity: .6; }
 
-.snippet .btn .octicon {
+.snippet .snippet-copy-btn .octicon {
   vertical-align: text-top; }
 
-.snippet .btn .counter {
+.snippet .snippet-copy-btn .counter {
   text-shadow: none;
   background-color: #e5e5e5; }
 
-.snippet .btn:focus {
+.snippet .snippet-copy-btn:focus {
   text-decoration: none;
   border-color: #51a7e8;
   outline: none;
   box-shadow: 0 0 5px rgba(81, 167, 232, 0.5); }
 
-.snippet .btn:focus:hover, .btn.selected:focus {
+.snippet .snippet-copy-btn:focus:hover, .snippet-copy-btn.selected:focus {
   border-color: #51a7e8; }
 
-.snippet .btn:hover, .btn:active, .btn.zeroclipboard-is-hover, .btn.zeroclipboard-is-active {
+.snippet .snippet-copy-btn:hover, .snippet-copy-btn:active, .snippet-copy-btn.zeroclipboard-is-hover, .snippet-copy-btn.zeroclipboard-is-active {
   text-decoration: none;
   background-color: #ddd;
   background-image: linear-gradient(#eee, #ddd);
   border-color: #ccc; }
 
-.snippet .btn:active, .btn.selected, .btn.zeroclipboard-is-active {
+.snippet .snippet-copy-btn:active, .snippet-copy-btn.selected, .snippet-copy-btn.zeroclipboard-is-active {
   background-color: #dcdcdc;
   background-image: none;
   border-color: #b5b5b5;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15); }
 
-.snippet .btn.selected:hover {
+.snippet .snippet-copy-btn.selected:hover {
   background-color: #cfcfcf; }
 
-.snippet .btn:disabled, .btn:disabled:hover, .btn.disabled, .btn.disabled:hover {
+.snippet .snippet-copy-btn:disabled, .snippet-copy-btn:disabled:hover, .snippet-copy-btn.disabled, .snippet-copy-btn.disabled:hover {
   color: rgba(102, 102, 102, 0.5);
   cursor: default;
   background-color: rgba(229, 229, 229, 0.5);
@@ -4501,12 +4501,12 @@ li.L9 {
   border-color: rgba(197, 197, 197, 0.5);
   box-shadow: none; }
 
-.snippet .clippy {
-  margin-top: -3px;
+.snippet .snippet-clippy {
+  margin-top: 0px;
   position: relative;
   top: 3px; }
 
-.snippet .btn[disabled] .clippy {
+.snippet .snippet-copy-btn[disabled] .snippet-clippy {
   opacity: .3; }
 
 .snippet {
@@ -4517,7 +4517,7 @@ li.L9 {
   font-size: 14px;
   line-height: 20px; }
 
-.snippet .btn {
+.snippet .snippet-copy-btn {
   -webkit-transition: opacity .3s ease-in-out;
   -o-transition: opacity .3s ease-in-out;
   transition: opacity .3s ease-in-out;
@@ -4527,11 +4527,11 @@ li.L9 {
   right: 4px;
   top: 4px; }
 
-.snippet:hover .btn, .snippet .btn:focus {
+.snippet:hover .snippet-copy-btn, .snippet .snippet-copy-btn:focus {
   opacity: 1; }
 
 @media screen and (max-width: 768px) {
-  .snippet .btn {
+  .snippet .snippet-copy-btn {
     opacity: 1; } }
 
 .editormd-preview-container pre.prettyprint, .editormd-html-preview pre.prettyprint {
