@@ -26,3 +26,5 @@ to-html/dist/
 
 # Mac OS
 .DS_Store
+
+example/editor.md
