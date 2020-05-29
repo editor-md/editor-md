@@ -94,10 +94,10 @@ function js() {
     }}))
     .pipe(gulp.dest("./js"))
     .pipe(rename({ suffix: ".min" }))
-    .pipe(babel({
-        presets: ['es2015'] // es5检查机制
-    }))
-    .pipe(uglify())
+    // .pipe(babel({
+    //     presets: ['es2015'] // es5检查机制
+    // }))
+    // .pipe(uglify())
     .pipe(gulp.dest("./js"))	
     .pipe(header(headerMiniComment, {pkg : pkg, fileName : function(file) {
         var name = file.path.split(file.base + ( (os.platform() === "win32") ? "\\" : "/") );
@@ -282,7 +282,8 @@ function build() {
 
 function put() {
     return gulp.src("./build/**/*").pipe(gulp.dest("./examples/editor.md")),
-           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/client/public/editor.md"));
+           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/pc/public/editor.md")),
+           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/mobile/public/editor.md"));
 }
 
 exports.css = css;

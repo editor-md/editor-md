@@ -12,6 +12,8 @@
 .MathJax {
     outline:0;
     font-size: 16px;
+    overflow-x: scroll;
+    overflow-y: hidden;
 }
 
 #{$prefix}preview-container, #{$prefix}html-preview {

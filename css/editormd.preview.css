@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-05-26
+ * @updateTime  2020-05-29
  */
 
 @charset "UTF-8";
@@ -739,6 +739,7 @@
   margin: 0;
   font-size: 100%;
   word-break: normal;
+  overflow: 'scroll';
   white-space: pre;
   background: transparent;
   border: 0; }
@@ -766,6 +767,7 @@
   margin: 0;
   overflow: visible;
   line-height: inherit;
+  white-space: pre;
   word-wrap: normal;
   background-color: initial;
   border: 0; }
@@ -892,7 +894,9 @@
 
 .MathJax {
   outline: 0;
-  font-size: 16px; }
+  font-size: 16px;
+  overflow-x: scroll;
+  overflow-y: hidden; }
 
 .editormd-preview-container, .editormd-html-preview {
   text-align: left;

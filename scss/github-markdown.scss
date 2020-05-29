@@ -803,6 +803,7 @@
   margin: 0;
   font-size: 100%;
   word-break: normal;
+  overflow: 'scroll';
   white-space: pre;
   background: transparent;
   border: 0;
@@ -834,6 +835,7 @@
   margin: 0;
   overflow: visible;
   line-height: inherit;
+  white-space:pre;
   word-wrap: normal;
   background-color: initial;
   border: 0;
