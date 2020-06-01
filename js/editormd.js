@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-05-31
+ * @updateTime  2020-06-01
  */
 
 /**
