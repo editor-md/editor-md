@@ -73,6 +73,7 @@ function pluginJs() {
     return gulp.src([
         "./src/lib/clipboard.min.js",
         "./src/lib/clipboard.use.js",
+        // "./src/lib/echo/echo.min.js",
         "./src/lib/imglazyload.js",
     ])
     .pipe(ngModuleSort())

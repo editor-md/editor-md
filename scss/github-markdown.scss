@@ -803,7 +803,7 @@
   margin: 0;
   font-size: 100%;
   word-break: normal;
-  overflow: 'scroll';
+  overflow: auto;
   white-space: pre;
   background: transparent;
   border: 0;
@@ -833,7 +833,7 @@
   max-width: auto;
   padding: 0;
   margin: 0;
-  overflow: visible;
+  overflow: auto;
   line-height: inherit;
   white-space:pre;
   word-wrap: normal;

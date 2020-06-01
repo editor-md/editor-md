@@ -2338,9 +2338,9 @@
                 }
                 
                 if (settings.imageLazyLoad) {
-                    if (typeof ImgLazyLoad !== undefined) {
-                        ImgLazyLoad();
-                    }
+                    // if (typeof ImgLazyLoad !== undefined) {
+                    //     ImgLazyLoad();
+                    // }
                 }
 
                 if (state.loaded)
@@ -2605,7 +2605,8 @@
 
             //     return false;
             // }
-            return $('#MJX-SVG-styles').prop("outerHTML") + "\n" + this.previewContainer.html();
+
+            return $('#MJX-CHTML-styles').prop("outerHTML") + "\n" + this.previewContainer.html();
         },
 
         /**
@@ -4411,9 +4412,9 @@
         }
 
         if (settings.imageLazyLoad) {
-            if (typeof ImgLazyLoad !== undefined) {
-                ImgLazyLoad();
-            }
+            // if (typeof ImgLazyLoad !== undefined) {
+            //     ImgLazyLoad();
+            // }
         }
     
         div.getMarkdown = function() {

@@ -11,10 +11,18 @@
 
 .MathJax {
     outline:0;
-    font-size: 16px;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    font-family: 'Open Sans','Helvetica Neue',"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Hiragino Kaku Gothic Pro",Meiryo,"Noto Sans CJK SC","WenQuanYi Micro Hei",Arial,Helvetica,sans-serif !important;
+    font-size: 20px !important;
+    overflow-x: visible !important;
+    overflow-y: hidden !important;
 }
+
+body::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+// #{$prefix}preview-container::-webkit-scrollbar { width: 0 !important } 
+// #{$prefix}html-preview::-webkit-scrollbar { width: 0 !important }
 
 #{$prefix}preview-container, #{$prefix}html-preview {
     text-align: left;

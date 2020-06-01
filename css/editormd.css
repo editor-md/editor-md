@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-05-29
+ * @updateTime  2020-05-31
  */
 
 @charset "UTF-8";
@@ -2350,7 +2350,7 @@
   height: 640px;
   margin: 0 auto;
   text-align: left;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   margin-bottom: 15px;
   border: 1px solid #ddd;
@@ -3693,7 +3693,7 @@
   margin: 0;
   font-size: 100%;
   word-break: normal;
-  overflow: 'scroll';
+  overflow: auto;
   white-space: pre;
   background: transparent;
   border: 0; }
@@ -3719,7 +3719,7 @@
   max-width: auto;
   padding: 0;
   margin: 0;
-  overflow: visible;
+  overflow: auto;
   line-height: inherit;
   white-space: pre;
   word-wrap: normal;
@@ -3848,9 +3848,13 @@
 
 .MathJax {
   outline: 0;
-  font-size: 16px;
-  overflow-x: scroll;
-  overflow-y: hidden; }
+  font-family: 'Open Sans','Helvetica Neue',"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Hiragino Kaku Gothic Pro",Meiryo,"Noto Sans CJK SC","WenQuanYi Micro Hei",Arial,Helvetica,sans-serif !important;
+  font-size: 20px !important;
+  overflow-x: visible !important;
+  overflow-y: hidden !important; }
+
+body::-webkit-scrollbar {
+  width: 0 !important; }
 
 .editormd-preview-container, .editormd-html-preview {
   text-align: left;
