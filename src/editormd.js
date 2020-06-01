@@ -154,6 +154,7 @@
                                                // Support FontAwesome icon emoji :fa-xxx: > Using fontAwesome icon web fonts;
                                                // Support Editor.md logo icon emoji :editormd-logo: :editormd-logo-1x: > 1~8x;
         tex                  : true,          // TeX(LaTeX), based on KaTeX
+        texHostUrl           : "",
         flowChart            : false,          // flowChart.js only support IE9+
         sequenceDiagram      : false,          // sequenceDiagram.js only support IE9+
         previewCodeHighlight : true,
@@ -2606,7 +2607,8 @@
             //     return false;
             // }
 
-            return $('#MJX-CHTML-styles').prop("outerHTML") + "\n" + this.previewContainer.html();
+            var reg = new RegExp(this.settings.texHostUrl, "g");
+            return $('#MJX-CHTML-styles').prop("outerHTML").replace(reg, "") + "\n" + this.previewContainer.html();
         },
 
         /**
