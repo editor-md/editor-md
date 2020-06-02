@@ -31,8 +31,8 @@
     function forceLoadImg() {
         var images = document.querySelectorAll(".lazyload");
         Array.prototype.forEach.call(images, function (image) {
-            var src = image.getAttribute(self.settings.src);
-            var srcset = image.getAttribute(self.settings.srcset);
+            var src = image.dataset.src;
+            var srcset = image.dataset.srcset;
             if ("img" === image.tagName.toLowerCase()) {
                 if (src) {
                     image.src = src;
