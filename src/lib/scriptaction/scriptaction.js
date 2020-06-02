@@ -28,6 +28,24 @@
         new LazyLoad(images);
     }
 
+    function forceLoadImg() {
+        var images = document.querySelectorAll(".lazyload");
+        Array.prototype.forEach.call(images, function (image) {
+            var src = image.getAttribute(self.settings.src);
+            var srcset = image.getAttribute(self.settings.srcset);
+            if ("img" === image.tagName.toLowerCase()) {
+                if (src) {
+                    image.src = src;
+                }
+                if (srcset) {
+                    image.srcset = srcset;
+                }
+            } else {
+                image.style.backgroundImage = "url('" + src + "')";
+            }
+        });
+    }
+
     function gao() {
         snipperAction();
         imageLazyLoad();
@@ -37,6 +55,7 @@
         snipperAction: snipperAction,
         imageLazyLoad: imageLazyLoad,
         gao: gao,
+        forceLoadImg: forceLoadImg,
     }
 });
 
