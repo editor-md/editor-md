@@ -71,10 +71,10 @@ function css() {
 
 function pluginJs() {
     return gulp.src([
-        "./src/lib/clipboard.min.js",
-        "./src/lib/clipboard.use.js",
-        // "./src/lib/echo/echo.min.js",
-        "./src/lib/imglazyload.js",
+        "./src/lib/clipboard/clipboard.min.js",
+        "./src/lib/clipboard/clipboard.use.min.js",
+        "./src/lib/lazyload/lazyload.min.js",
+        "./src/lib/scriptaction/scriptaction.min.js",
     ])
     .pipe(ngModuleSort())
     .pipe(concat("plugins.min.js"))
@@ -83,8 +83,8 @@ function pluginJs() {
 
 function js() {
     return gulp.src([
-        "./src/lib/marked.js", 
-        "./src/lib/prettify.min.js",
+        "./src/lib/marked/marked.min.js", 
+        "./src/lib/prettify/prettify.min.js",
         "./src/editormd.js"
     ])
     .pipe(ngModuleSort())
@@ -95,10 +95,10 @@ function js() {
     }}))
     .pipe(gulp.dest("./js"))
     .pipe(rename({ suffix: ".min" }))
-    // .pipe(babel({
-    //     presets: ['es2015'] // es5检查机制
-    // }))
-    // .pipe(uglify())
+    .pipe(babel({
+        presets: ['es2015'] // es5检查机制
+    }))
+    .pipe(uglify())
     .pipe(gulp.dest("./js"))	
     .pipe(header(headerMiniComment, {pkg : pkg, fileName : function(file) {
         var name = file.path.split(file.base + ( (os.platform() === "win32") ? "\\" : "/") );
@@ -287,6 +287,15 @@ function put() {
            gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/mobile/public/editor.md"));
 }
 
+function pluginJSMin() {
+    return (
+        jsMini("./src/lib/scriptaction/scriptaction.js", "./src/lib/scriptaction"),
+        // jsMini("./src/lib/lazyload/lazyload.js", "./src/lib/lazyload"),
+        jsMini("./src/lib/clipboard/clipboard.use.js", "./src/lib/clipboard"),
+        jsMini("./src/lib/marked/marked.js", "./src/lib/marked")
+    );
+}
+
 exports.css = css;
 exports.js = js;
 exports.cm_mode = cm_mode;
@@ -296,7 +305,8 @@ exports.cleanBuild = cleanBuild;
 exports.build = build;
 exports.pluginJs = pluginJs;
 exports.put = put;
-exports.gao = gulp.series(gulp.parallel(css, js, pluginJs), build, put);
-exports.default = gulp.parallel(css, js);
+exports.pluginJSMin = pluginJSMin;
+exports.default = gulp.series(gulp.parallel(css, js, pluginJs), build, put);
+
 
 

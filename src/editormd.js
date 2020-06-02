@@ -137,7 +137,9 @@
         uploadURL            : "",
         crossDomainUpload    : false,
         uploadCallbackURL    : "",
-        imageLazyLoad        : true,     // 图片是否需要懒加载优化，默认为true
+        imageLazyLoad        : false,     // 图片是否需要懒加载优化，默认为true
+        imageLazyLoadLoadingICON: `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`,
+
 
         toc                  : true,           // Table of contents
         tocm                 : false,           // Using [TOCM], auto create ToC dropdown menu
@@ -154,7 +156,7 @@
                                                // Support FontAwesome icon emoji :fa-xxx: > Using fontAwesome icon web fonts;
                                                // Support Editor.md logo icon emoji :editormd-logo: :editormd-logo-1x: > 1~8x;
         tex                  : true,          // TeX(LaTeX), based on KaTeX
-        texHostUrl           : "",
+        texHostUrl           : "",            //MathJax CSS文件中的字体路径替换URL
         flowChart            : false,          // flowChart.js only support IE9+
         sequenceDiagram      : false,          // sequenceDiagram.js only support IE9+
         previewCodeHighlight : true,
@@ -1542,9 +1544,9 @@
                 if (typeof prettyPrint !== "undefined") 
                 {
                     prettyPrint();
-                    if (typeof Clipboard !== "undefined")
+                    if (typeof window.Clipboard !== "undefined")
                     {
-                        Clipboard(settings.path);
+                        window.Clipboard.render(settings.path); 
                     }
                 }
             }
@@ -2254,6 +2256,9 @@
                 sanitize    : (settings.htmlDecode) ? false : true,  // 关闭忽略HTML标签，即开启识别HTML标签，默认为false
                 smartLists  : true,
                 smartypants : false,
+                imageLazyLoad: settings.imageLazyLoad,
+                imageLazyLoadLoadingICON: settings.imageLazyLoadLoadingICON,
+                
                 // mathDelimiters : [['$', '$'], ['\\(', '\\)'], ['\\[', '\\]'], ['$$', '$$'], 'beginend']
             };
 
@@ -2339,9 +2344,7 @@
                 }
                 
                 if (settings.imageLazyLoad) {
-                    // if (typeof ImgLazyLoad !== undefined) {
-                    //     ImgLazyLoad();
-                    // }
+                    window.ScriptAction.imageLazyLoad();
                 }
 
                 if (state.loaded)
@@ -2606,7 +2609,16 @@
 
             //     return false;
             // }
-
+            
+            var _this = this; 
+            if (this.settings.imageLazyLoad === true) {
+                let images = document.querySelectorAll(".lazyload");
+                Array.prototype.forEach.call(images, function (image) {
+                    if ("img" === image.tagName.toLowerCase()) {
+                        image.src = "data:image/gif;base64," + _this.settings.imageLazyLoadLoadingICON;
+                    }
+                });
+            }
             var reg = new RegExp(this.settings.texHostUrl, "g");
             return $('#MJX-CHTML-styles').prop("outerHTML").replace(reg, "") + "\n" + this.previewContainer.html();
         },
@@ -4280,7 +4292,9 @@
             flowChart            : false,    //流程图
             sequenceDiagram      : false,   // 时序/序列图
             previewCodeHighlight : true,   //代码高亮
-            imageLazyLoad        : true,
+            imageLazyLoad        : false,
+            imageLazyLoadLoadingICON: `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`,
+
         };
 
         var div           = $("#" + id);
@@ -4325,6 +4339,8 @@
             sanitize    : settings.htmlDecode ? false : true, //false 开启HTML标签解析 
             smartLists  : true,
             smartypants : false,
+            imageLazyLoad: settings.imageLazyLoad,
+            imageLazyLoadLoadingICON: settings.imageLazyLoadLoadingICON,
             // mathDelimiters : [['$', '$'], ['\\(', '\\)'], ['\\[', '\\]'], ['$$', '$$'], 'beginend']
         };
         
@@ -4367,9 +4383,9 @@
         {
             div.find("pre").addClass("snippet prettyprint linenums");
             prettyPrint();
-            if (typeof Clipboard !== "undefined")
+            if (typeof window.Clipboard !== "undefined")
             {
-                Clipboard(loadPath);
+                window.Clipboard.render(loadPath);
             }
             
         }
@@ -4414,9 +4430,7 @@
         }
 
         if (settings.imageLazyLoad) {
-            // if (typeof ImgLazyLoad !== undefined) {
-            //     ImgLazyLoad();
-            // }
+            window.ScriptAction.imageLazyLoad();
         }
     
         div.getMarkdown = function() {

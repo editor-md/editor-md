@@ -56,6 +56,8 @@
 				smartypants: false,
 				tokenizer: null,
 				xhtml: false,
+				imageLazyLoad: false,
+				imageLazyLoadLoadingICON: "",
 				// mathDelimiters: null,
 			};
 		}
@@ -1807,7 +1809,12 @@
 				return text;
 			}
 
-			var out = '<img src="' + href + '" data-echo="' + href + '" alt="图片加载中..."';
+			var out = '<img src="' + href + '" alt="图片加载中..."';
+
+			if (this.options.imageLazyLoad === true) {
+				var loadingBase64 = this.options.imageLazyLoadLoadingICON;
+				out = '<img class="lazyload" src="data:image/gif;base64,' + loadingBase64 + '" data-src="' + href + '" alt="图片加载中..."'; 
+			}
 
 			if (title) {
 				out += ' title="' + title + '"';
