@@ -4039,8 +4039,7 @@
 /* Put a border around prettyprinted code snippets. */
 pre.prettyprint {
   padding: 2px;
-  white-space: nowrap !important;
-  word-wrap: normal; }
+  border: 1px solid #888; }
 
 /* Specify class=linenums on a pre to get line numbering */
 ol.linenums {
@@ -4587,6 +4586,7 @@ li.L9 {
   word-wrap: normal; }
 
 .editormd-preview-container ol.linenums, .editormd-html-preview ol.linenums {
+  color: #999;
   padding-left: 2.5em; }
   .editormd-preview-container ol.linenums li, .editormd-html-preview ol.linenums li {
     list-style-type: decimal; }
