@@ -4,13 +4,13 @@
 @import "lib/prefixes";
 
 @import "font-awesome";
-        
+
 .editormd {
     width: 90%;
     height: 640px;
     margin: 0 auto;
     text-align: left;
-    overflow: auto;  
+    overflow: hidden;  
     position: relative;
     margin-bottom: 15px;
     border: 1px solid $borderColor;
@@ -53,8 +53,8 @@
     }
             
     ::-webkit-scrollbar {
-        height: 10px;
-        width: 7px;
+        height: 2px;
+        width: 2px;
         background: rgba(0, 0, 0, .1);
 
         &:hover {
@@ -64,7 +64,7 @@
 
     ::-webkit-scrollbar-thumb {
         background: rgba(0,0,0,0.3);
-        @include border-radius(6px);
+        @include border-radius(3px);
 
         &:hover {
             @include box-shadow(inset 1px 1px 1px rgba(0, 0, 0, .25));
@@ -101,7 +101,7 @@
     margin: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
     padding: 35px 0 0;
     position: relative;   
     background: #fff;

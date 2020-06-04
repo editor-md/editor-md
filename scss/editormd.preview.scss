@@ -13,16 +13,29 @@
     outline:0;
     font-family: 'Open Sans','Helvetica Neue',"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Hiragino Kaku Gothic Pro",Meiryo,"Noto Sans CJK SC","WenQuanYi Micro Hei",Arial,Helvetica,sans-serif !important;
     font-size: 20px !important;
-    overflow-x: visible !important;
+    overflow-x: auto !important;
     overflow-y: hidden !important;
+    ::-webkit-scrollbar {
+        height: 2px;
+        width: 2px;
+        background: rgba(0, 0, 0, .1);
+
+        &:hover {
+            background: rgba(0, 0, 0, .2);
+        }
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0,0,0,0.3);
+        @include border-radius(3px);
+
+        &:hover {
+            @include box-shadow(inset 1px 1px 1px rgba(0, 0, 0, .25));
+            background-color: rgba(0, 0, 0, .4);
+        }
+    }
 }
 
-body::-webkit-scrollbar {
-    width: 0 !important;
-}
-
-// #{$prefix}preview-container::-webkit-scrollbar { width: 0 !important } 
-// #{$prefix}html-preview::-webkit-scrollbar { width: 0 !important }
 
 #{$prefix}preview-container, #{$prefix}html-preview {
     text-align: left;
@@ -32,6 +45,26 @@ body::-webkit-scrollbar {
     overflow: auto;
     width: 100%;
     background-color: #fff;
+
+    ::-webkit-scrollbar {
+        height: 2px;
+        width: 2px;
+        background: rgba(0, 0, 0, .1);
+
+        &:hover {
+            background: rgba(0, 0, 0, .2);
+        }
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0,0,0,0.3);
+        @include border-radius(3px);
+
+        &:hover {
+            @include box-shadow(inset 1px 1px 1px rgba(0, 0, 0, .25));
+            background-color: rgba(0, 0, 0, .4);
+        }
+    }
 
     blockquote {
         color: $color;
@@ -60,12 +93,12 @@ body::-webkit-scrollbar {
 
     code {
         border: 1px solid $borderColor;
-        background: #dadada; 
+        background: #dadada;
         // background: #f6f6f6;
         padding-top: 1px;
         padding-bottom: 1px;
-        padding-left: 2px;
-        padding-right: 2px;
+        padding-left: 1px;
+        padding-right: 1px;
         border-radius: 3px;
         font-size: 14px;
     }
@@ -74,7 +107,7 @@ body::-webkit-scrollbar {
         border: 1px solid $borderColor;
         // background: #dadada;
         background: #f6f6f6;
-        padding: 10px;
+        padding: 5px;
         @include border-radius(3px);
 
         code {
@@ -137,14 +170,16 @@ body::-webkit-scrollbar {
 
 #{$prefix}preview-container, #{$prefix}html-preview {
     pre.prettyprint { 
-        padding: 10px; 
+        padding: 5px; 
         border: 1px solid $borderColor; 
-        white-space: pre-wrap;
-        word-wrap: break-word;
+        white-space: nowrap;
+        word-wrap: normal;
+        // white-space: pre-wrap;
+        // word-wrap: break-word;
     }
 
-    ol.linenums { 
-        color: #999; 
+    ol.linenums {
+        // color: #999; 
         padding-left: 2.5em; 
     
         li { 

@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-06-03
+ * @updateTime  2020-06-04
  */
 
 @charset "UTF-8";
@@ -2350,7 +2350,7 @@
   height: 640px;
   margin: 0 auto;
   text-align: left;
-  overflow: auto;
+  overflow: hidden;
   position: relative;
   margin-bottom: 15px;
   border: 1px solid #ddd;
@@ -2383,18 +2383,18 @@
     -ms-appearance: none;
     appearance: none; }
   .editormd ::-webkit-scrollbar {
-    height: 10px;
-    width: 7px;
+    height: 2px;
+    width: 2px;
     background: rgba(0, 0, 0, 0.1); }
     .editormd ::-webkit-scrollbar:hover {
       background: rgba(0, 0, 0, 0.2); }
   .editormd ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.3);
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    -ms-border-radius: 6px;
-    -o-border-radius: 6px;
-    border-radius: 6px; }
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px; }
     .editormd ::-webkit-scrollbar-thumb:hover {
       -webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
       /* Webkit browsers */
@@ -2540,7 +2540,7 @@
   margin: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
   padding: 35px 0 0;
   position: relative;
   background: #fff;
@@ -3850,11 +3850,33 @@
   outline: 0;
   font-family: 'Open Sans','Helvetica Neue',"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Hiragino Kaku Gothic Pro",Meiryo,"Noto Sans CJK SC","WenQuanYi Micro Hei",Arial,Helvetica,sans-serif !important;
   font-size: 20px !important;
-  overflow-x: visible !important;
+  overflow-x: auto !important;
   overflow-y: hidden !important; }
-
-body::-webkit-scrollbar {
-  width: 0 !important; }
+  .MathJax ::-webkit-scrollbar {
+    height: 2px;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.1); }
+    .MathJax ::-webkit-scrollbar:hover {
+      background: rgba(0, 0, 0, 0.2); }
+  .MathJax ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px; }
+    .MathJax ::-webkit-scrollbar-thumb:hover {
+      -webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* Webkit browsers */
+      -moz-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* Firefox */
+      -ms-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* IE9 */
+      -o-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* Opera(Old) */
+      box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* IE9+, News */
+      background-color: rgba(0, 0, 0, 0.4); }
 
 .editormd-preview-container, .editormd-html-preview {
   text-align: left;
@@ -3864,6 +3886,31 @@ body::-webkit-scrollbar {
   overflow: auto;
   width: 100%;
   background-color: #fff; }
+  .editormd-preview-container ::-webkit-scrollbar, .editormd-html-preview ::-webkit-scrollbar {
+    height: 2px;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.1); }
+    .editormd-preview-container ::-webkit-scrollbar:hover, .editormd-html-preview ::-webkit-scrollbar:hover {
+      background: rgba(0, 0, 0, 0.2); }
+  .editormd-preview-container ::-webkit-scrollbar-thumb, .editormd-html-preview ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px; }
+    .editormd-preview-container ::-webkit-scrollbar-thumb:hover, .editormd-html-preview ::-webkit-scrollbar-thumb:hover {
+      -webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* Webkit browsers */
+      -moz-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* Firefox */
+      -ms-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* IE9 */
+      -o-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* Opera(Old) */
+      box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+      /* IE9+, News */
+      background-color: rgba(0, 0, 0, 0.4); }
   .editormd-preview-container blockquote, .editormd-html-preview blockquote {
     color: #666;
     border-left: 4px solid #ddd;
@@ -3886,14 +3933,14 @@ body::-webkit-scrollbar {
     background: #dadada;
     padding-top: 1px;
     padding-bottom: 1px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 1px;
+    padding-right: 1px;
     border-radius: 3px;
     font-size: 14px; }
   .editormd-preview-container pre, .editormd-html-preview pre {
     border: 1px solid #ddd;
     background: #f6f6f6;
-    padding: 10px;
+    padding: 5px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
@@ -3992,7 +4039,8 @@ body::-webkit-scrollbar {
 /* Put a border around prettyprinted code snippets. */
 pre.prettyprint {
   padding: 2px;
-  border: 1px solid #888; }
+  white-space: nowrap !important;
+  word-wrap: normal; }
 
 /* Specify class=linenums on a pre to get line numbering */
 ol.linenums {
@@ -4000,23 +4048,13 @@ ol.linenums {
   margin-bottom: 0; }
 
 /* IE indents via margin-left */
-li.L0,
-li.L1,
-li.L2,
-li.L3,
-li.L5,
-li.L6,
-li.L7,
-li.L8 {
-  list-style-type: none; }
-
 /* Alternate shading for lines */
 li.L1,
 li.L3,
 li.L5,
 li.L7,
 li.L9 {
-  background: #eee; }
+  background-color: #eee !important; }
 
 /* *,:after,:before {
 	box-sizing: inherit
@@ -4543,13 +4581,12 @@ li.L9 {
     opacity: 1; } }
 
 .editormd-preview-container pre.prettyprint, .editormd-html-preview pre.prettyprint {
-  padding: 10px;
+  padding: 5px;
   border: 1px solid #ddd;
-  white-space: pre-wrap;
-  word-wrap: break-word; }
+  white-space: nowrap;
+  word-wrap: normal; }
 
 .editormd-preview-container ol.linenums, .editormd-html-preview ol.linenums {
-  color: #999;
   padding-left: 2.5em; }
   .editormd-preview-container ol.linenums li, .editormd-html-preview ol.linenums li {
     list-style-type: decimal; }
