@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-06-04
+ * @updateTime  2020-06-05
  */
 
 @charset "UTF-8";
@@ -3845,6 +3845,33 @@
 .markdown-body .task-list-item input {
   margin: 0 .2em .25em -1.6em;
   vertical-align: middle; }
+
+::-webkit-scrollbar {
+  height: 2px;
+  width: 2px;
+  background: rgba(0, 0, 0, 0.1); }
+  ::-webkit-scrollbar:hover {
+    background: rgba(0, 0, 0, 0.2); }
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover {
+    -webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+    /* Webkit browsers */
+    -moz-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+    /* Firefox */
+    -ms-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+    /* IE9 */
+    -o-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+    /* Opera(Old) */
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+    /* IE9+, News */
+    background-color: rgba(0, 0, 0, 0.4); }
 
 .MathJax {
   outline: 0;
