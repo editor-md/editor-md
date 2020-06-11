@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-06-05
+ * @updateTime  2020-06-12
  */
 
 @charset "UTF-8";
@@ -3876,7 +3876,6 @@
 .MathJax {
   outline: 0;
   font-family: 'Open Sans','Helvetica Neue',"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Hiragino Kaku Gothic Pro",Meiryo,"Noto Sans CJK SC","WenQuanYi Micro Hei",Arial,Helvetica,sans-serif !important;
-  font-size: 20px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important; }
   .MathJax ::-webkit-scrollbar {
@@ -3905,9 +3904,15 @@
       /* IE9+, News */
       background-color: rgba(0, 0, 0, 0.4); }
 
+.math-inline {
+  font-size: 1rem !important; }
+
+.math-block {
+  font-size: 18px !important; }
+
 .editormd-preview-container, .editormd-html-preview {
   text-align: left;
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 1.6;
   padding: 20px;
   overflow: auto;
@@ -3943,8 +3948,7 @@
     border-left: 4px solid #ddd;
     padding-left: 20px;
     margin-left: 0;
-    font-size: 14px;
-    font-style: italic; }
+    font-size: 14px; }
   .editormd-preview-container p code, .editormd-html-preview p code {
     margin-left: 5px;
     margin-right: 4px; }
@@ -4105,6 +4109,7 @@ li.L9 {
   border-left: .2rem solid #448aff;
   border-radius: .1rem;
   font-size: 14px;
+  font-size: 1rem;
   overflow: auto; }
 
 /* [dir=rtl] .markdown-body .admonition,[dir=rtl] .markdown-body details {

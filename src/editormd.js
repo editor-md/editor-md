@@ -91,7 +91,7 @@
         watch                : false,
         placeholder          : "Enjoy Markdown! use $e^x$ in Latex.",
         gotoLine             : true,
-        codeFold             : false,
+        codeFold             : true,
         autoHeight           : false,
 		autoFocus            : false,     
         autoCloseTags        : true,
@@ -157,6 +157,7 @@
                                                // Support Editor.md logo icon emoji :editormd-logo: :editormd-logo-1x: > 1~8x;
         tex                  : true,          // TeX(LaTeX), based on KaTeX
         texHostUrl           : "",            //MathJax CSS文件中的字体路径替换URL
+        texTargetUrl         : "",            // MathJax CSS 文件中的字体路径替换目标URL
         flowChart            : false,          // flowChart.js only support IE9+
         sequenceDiagram      : false,          // sequenceDiagram.js only support IE9+
         previewCodeHighlight : true,
@@ -771,7 +772,7 @@
                 mode                      : settings.mode,
                 theme                     : settings.editorTheme,
                 tabSize                   : settings.tabSize,
-                dragDrop                  : false,
+                dragDrop                  : true,
                 autofocus                 : settings.autoFocus,
                 autoCloseTags             : settings.autoCloseTags,
                 readOnly                  : (settings.readOnly) ? "nocursor" : false,
@@ -792,7 +793,8 @@
                 autoCloseBrackets         : settings.autoCloseBrackets,
                 showTrailingSpace         : settings.showTrailingSpace,
                 highlightSelectionMatches : ( (!settings.matchWordHighlight) ? false : { showToken: (settings.matchWordHighlight === "onselected") ? false : /\w/ } ),
-                scrollPastEnd             : true
+                scrollPastEnd             : true,
+                smartIndent               : false,    // 智能tab
             };
 
             this.codeEditor = this.cm        = editormd.$CodeMirror.fromTextArea(this.markdownTextarea[0], codeMirrorConfig);
@@ -2199,6 +2201,93 @@
             return this;
         },
 
+        
+        rtrim : function(str, c, invert) {
+            var l = str.length;
+    
+            if (l === 0) {
+                return '';
+            } // Length of suffix matching the invert condition.
+    
+    
+            var suffLen = 0; // Step left until we fail to match the invert condition.
+    
+            while (suffLen < l) {
+                var currChar = str.charAt(l - suffLen - 1);
+    
+                if (currChar === c && !invert) {
+                    suffLen++;
+                } else if (currChar !== c && invert) {
+                    suffLen++;
+                } else {
+                    break;
+                }
+            }
+    
+            return str.substr(0, l - suffLen);
+        },
+
+        /**
+         * 调整编辑器的尺寸和布局
+         * Resize editor layout
+         *
+         * @param   {String}                    待处理markdown源码
+         * @returns {String}                    返回处理后的Markdown源码
+         */
+
+        mathProcess: function(md) {
+            var res = "";
+            var mds = md.split('\n');
+            var preBlock = false;
+            var BlockContent = "";
+            for (var i = 0; i < mds.length; ++i) {
+                var now = this.rtrim(mds[i]);
+                if (now == "$$") {
+                    BlockContent += now + "\n";
+                    if (preBlock == false) {
+                        preBlock = true;
+                    } else {
+                        res += "\n\n```math\n";
+                        res += BlockContent;
+                        res += "```\n\n";
+                        preBlock = false;
+                        BlockContent = "";
+                    }
+                } else {
+                    if (preBlock == false) {
+                        var _now = "";
+                        var preInline = false;
+                        var InlineContent = "";
+                        for (var j = 0; j < now.length; ++j) {
+                            var ch = now[j];
+                            if (ch == '$') {
+                                InlineContent += ch;
+                                if (preInline == true) {
+                                    _now += "`" + InlineContent + "`";
+                                    InlineContent = "";
+                                    preInline = false;
+                                } else {
+                                    preInline = true;
+                                }
+                            } else {
+                                if (preInline == true) {
+                                    InlineContent += ch;
+                                } else {
+                                    _now += ch; 
+                                }
+                            }
+                        }
+                        _now += InlineContent;
+                        res += _now + "\n";
+                    } else {
+                        BlockContent += now + "\n";
+                    }
+                }
+            }
+            res += BlockContent;
+            return res;
+        },
+
         /**
          * 解析和保存Markdown代码
          * Parse & Saving Markdown source code
@@ -2265,7 +2354,7 @@
             marked.setOptions(markedOptions);
 
             var newMarkdownDoc = "";
-            newMarkdownDoc = editormd.$marked(cmValue, markedOptions);
+            newMarkdownDoc = editormd.$marked(this.mathProcess(cmValue), markedOptions);
 
             //console.info("cmValue", cmValue, newMarkdownDoc);
 
@@ -2620,7 +2709,7 @@
                 });
             }
             var reg = new RegExp(this.settings.texHostUrl, "g");
-            return $('#MJX-CHTML-styles').prop("outerHTML").replace(reg, "") + "\n" + this.previewContainer.html();
+            return $('#MJX-CHTML-styles').prop("outerHTML").replace(reg, this.settings.texTargetUrl) + "\n" + this.previewContainer.html();
         },
 
         /**
@@ -3968,16 +4057,24 @@
             {
                 return "<div class=\"flowchart\">" + code + "</div>";
             }
-            else if ( lang === "math" || lang == "latex" || lang == "katex")
+            else if ( lang === "math")
             {
-                return code;
-                // return "$$" + code + "$$";
+                return '<div class="math math-block">' + code + '</div>';
             }
             else
             {
                 return marked.Renderer.prototype.code.apply(this, arguments);
             }
         };
+
+        markedRenderer.codespan = function (code) {
+            var match = code.match(/^\$+([^\$\n]+?)\$+$/);
+            if (match) {
+                return '<span class="math math-inline">' + code + '</span>';
+            } else {
+                return '<code>' + code + '</code>';
+            }
+        }
 
         markedRenderer.tablecell = function(content, flags) {
             var type = (flags.header) ? "th" : "td";

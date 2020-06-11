@@ -278,13 +278,12 @@ function build() {
            .pipe(uglify())
            .pipe(gulp.dest("./build/plugins")),
            gulp.src("./lib/**/*").pipe(gulp.dest("./build/lib"));
-           
 }
 
 function put() {
-    return gulp.src("./build/**/*").pipe(gulp.dest("./examples/editor.md")),
-           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/pc/public/editor.md")),
-           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/mobile/public/editor.md"));
+    return gulp.src("./build/**/*").pipe(gulp.dest("./examples/editor.md"));
+        //    gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/pc/public/editor.md")),
+        //    gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/mobile/public/editor.md"));
 }
 
 function pluginJSMin() {
@@ -306,7 +305,7 @@ exports.build = build;
 exports.pluginJs = pluginJs;
 exports.put = put;
 exports.pluginJSMin = pluginJSMin;
-exports.default = gulp.series(gulp.parallel(css, js, pluginJs), build, put);
+exports.default = gulp.series(pluginJSMin, gulp.parallel(css, js, pluginJs), build, put);
 
 
 

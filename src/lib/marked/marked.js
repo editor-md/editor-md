@@ -434,7 +434,6 @@
 
 			if (cap) {
 				var lastToken = tokens[tokens.length - 1]; // An indented code block cannot interrupt a paragraph.
-
 				if (lastToken && lastToken.type === 'paragraph') {
 					return {
 						raw: cap[0],
@@ -634,7 +633,6 @@
 
 		_proto.html = function html(src) {
 			var cap = this.rules.block.html.exec(src);
-
 			if (cap) {
 				return {
 					type: this.options.sanitize ? 'paragraph' : 'html',
@@ -1144,6 +1142,7 @@
 		link: edit$1(/^!?\[(label)\]\((.*?)\)/).replace('label', inline._label).getRegex(),
 		reflink: edit$1(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace('label', inline._label).getRegex()
 	});
+
 	/**
 	 * GFM Inline Grammar
 	 */
@@ -1603,8 +1602,7 @@
 					token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
 					tokens.push(token);
 					continue;
-				} // code
-
+				} // codespan
 
 				if (token = this.tokenizer.codespan(src)) {
 					src = src.substring(token.raw.length);

@@ -32,7 +32,7 @@
 .MathJax {
     outline:0;
     font-family: 'Open Sans','Helvetica Neue',"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Hiragino Kaku Gothic Pro",Meiryo,"Noto Sans CJK SC","WenQuanYi Micro Hei",Arial,Helvetica,sans-serif !important;
-    font-size: 20px !important;
+    // font-size: 18px;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     ::-webkit-scrollbar {
@@ -56,10 +56,18 @@
     }
 }
 
+.math-inline {
+    font-size: 1rem !important;
+}
+
+.math-block {
+    font-size: 18px !important;
+}
+
 
 #{$prefix}preview-container, #{$prefix}html-preview {
     text-align: left;
-    font-size: 14px;
+    font-size: 1rem;
     line-height: 1.6;
     padding: 20px;
     overflow: auto;
@@ -92,7 +100,8 @@
         padding-left: 20px;
         margin-left: 0;
         font-size: 14px;
-        font-style: italic;
+        //斜体
+        // font-style: italic;
     }
 
     p code {
