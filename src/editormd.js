@@ -147,7 +147,8 @@
         tocDropdown          : false,
         tocContainer         : "",
         tocStartLevel        : 1,              // Said from H1 to create ToC
-        htmlDecode           : "style,script,iframe|on*",          // Open the HTML tag identification
+        // htmlDecode           : "style,script,iframe|on*",          // Open the HTML tag identification
+        htmlDecode           : "style,script,iframe",          // Open the HTML tag identification 
         pageBreak            : false,           // Enable parse page break [========]
         atLink               : false,           // for @link
         emailLink            : true,           // for email address auto link
@@ -2209,9 +2210,8 @@
                 return '';
             } // Length of suffix matching the invert condition.
     
-    
             var suffLen = 0; // Step left until we fail to match the invert condition.
-    
+
             while (suffLen < l) {
                 var currChar = str.charAt(l - suffLen - 1);
     
@@ -2236,20 +2236,35 @@
          */
 
         mathProcess: function(md) {
+            var getBlockQuotePre = function(md) {
+                var res = "";
+                for (var i = 0; i < md.length - 1; i += 2) {
+                    if (md[i] == '>' && md[i + 1] == ' ') {
+                        res += "> ";
+                    } else {
+                        break;
+                    }
+                }
+                return res;
+            }
             var res = "";
             var mds = md.split('\n');
             var preBlock = false;
             var BlockContent = "";
             for (var i = 0; i < mds.length; ++i) {
                 var now = this.rtrim(mds[i]);
-                if (now == "$$") {
+                var BlockQuotePre = getBlockQuotePre(now);
+                if (now == "$$" || 
+                    (BlockQuotePre.length > 0 
+                        && now[BlockQuotePre.length] == '$' 
+                        && now[BlockQuotePre.length + 1] == '$')) {
                     BlockContent += now + "\n";
                     if (preBlock == false) {
                         preBlock = true;
                     } else {
-                        res += "\n\n```math\n";
+                        res += BlockQuotePre + "```math\n";
                         res += BlockContent;
-                        res += "```\n\n";
+                        res += BlockQuotePre + "```\n";
                         preBlock = false;
                         BlockContent = "";
                     }
@@ -4301,7 +4316,7 @@
             html = html.replace(new RegExp("\<\s*" + tag + "\s*([^\>]*)\>([^\>]*)\<\s*\/" + tag + "\s*\>", "igm"), "");
         }
 
-        //return html;
+        return html;
 
         if (typeof attrs !== "undefined")
         {
