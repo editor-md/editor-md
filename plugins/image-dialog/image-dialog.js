@@ -152,13 +152,13 @@
 
                             if (link === "")
                             {
-                                cm.replaceSelection("![" + alt + "](" + url + altAttr + ")");
+                                cm.replaceSelection("![" + alt + "](" + url + altAttr + ")\n\n");
                             }
                             else
                             {
-                                cm.replaceSelection("[![" + alt + "](" + url + altAttr + ")](" + link + altAttr + ")");
+                                cm.replaceSelection("[![" + alt + "](" + url + altAttr + ")](" + link + altAttr + ")\n\n");
                             }
-
+                            
                             if (alt === "") {
                                 cm.setCursor(cursor.line, cursor.ch + 2);
                             }
