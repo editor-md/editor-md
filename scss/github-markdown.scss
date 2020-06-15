@@ -773,7 +773,11 @@
 }
 
 .markdown-body img {
-  max-width: 100%;
+  // max-width: 100%;
+  max-width: 480px;
+  max-height: 480px;
+  // max-width: 50%;
+  // max-height: 50%;
   box-sizing: initial;
   background-color: #fff;
 }

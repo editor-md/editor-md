@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-06-13
+ * @updateTime  2020-06-15
  */
 
 @charset "UTF-8";
@@ -714,7 +714,8 @@
   background-color: #f6f8fa; }
 
 .markdown-body img {
-  max-width: 100%;
+  max-width: 480px;
+  max-height: 480px;
   box-sizing: initial;
   background-color: #fff; }
 
@@ -958,12 +959,13 @@
 
 .editormd-preview-container, .editormd-html-preview {
   text-align: left;
-  font-size: 1rem;
+  font-size: 14px;
   line-height: 1.6;
   padding: 20px;
   overflow: auto;
   width: 100%;
-  background-color: #fff; }
+  background-color: #fff;
+  font-family: Georgia,serif; }
   .editormd-preview-container ::-webkit-scrollbar, .editormd-html-preview ::-webkit-scrollbar {
     height: 2px;
     width: 2px;
@@ -994,7 +996,7 @@
     border-left: 4px solid #ddd;
     padding-left: 20px;
     margin-left: 0;
-    font-size: 16px; }
+    font-size: 14px; }
   .editormd-preview-container p code, .editormd-html-preview p code {
     margin-left: 5px;
     margin-right: 4px; }
@@ -1150,12 +1152,11 @@ li.L9 {
 .markdown-body .admonition, .markdown-body details {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
   position: relative;
-  margin: 1.5625em 0;
+  margin: .8625em 0;
   padding: 0 .6rem;
   border-left: .2rem solid #448aff;
   border-radius: .1rem;
   font-size: 14px;
-  font-size: 1rem;
   overflow: auto; }
 
 /* [dir=rtl] .markdown-body .admonition,[dir=rtl] .markdown-body details {

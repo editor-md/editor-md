@@ -1811,7 +1811,7 @@
 
 			if (this.options.imageLazyLoad === true) {
 				var loadingBase64 = this.options.imageLazyLoadLoadingICON;
-				out = '<img class="lazyload" src="data:image/gif;base64,' + loadingBase64 + '" data-src="' + href + '" alt="图片加载中..."'; 
+				out = '<img class="lazyload markdown-img" src="data:image/gif;base64,' + loadingBase64 + '" data-src="' + href + '" alt="图片加载中..."'; 
 			}
 
 			if (title) {

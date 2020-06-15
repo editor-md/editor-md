@@ -17,11 +17,9 @@ MathJax = {
         ready: () => {
           MathJax.startup.defaultReady();
           MathJax.startup.promise.then(() => {
-			//渲染完毕后的回调
-			
+            //渲染完毕后的回调
           });
         }
       },
-
 };
 

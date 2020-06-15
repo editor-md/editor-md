@@ -123,9 +123,9 @@
         </div>
 
         <script src="js/jquery.min.js"></script>
-        <script type = "text/javascript" src="./editor.md/lib/mathjax/mathjax-configure.js"></script>
-        <script type = "text/javascript" id="MathJax-script" src="./editor.md/lib/mathjax/es5/tex-chtml-full.js"></script>
-        <script type = "text/javascript" src="./editor.md/js/plugins.min.js"></script>   
+        <!-- <script type = "text/javascript" src="./editor.md/lib/mathjax/mathjax-configure.js"></script> -->
+        <!-- <script type = "text/javascript" id="MathJax-script" src="./editor.md/lib/mathjax/es5/tex-chtml-full.js"></script> -->
+        <!-- <script type = "text/javascript" src="./editor.md/js/plugins.min.js"></script>    -->
         <script type = "text/javascript" src="./editor.md/js/editormd.min.js"></script>
 
 <script>
@@ -166,6 +166,7 @@
                         fileUpload  : true,
                         uploadURL : "http://localhost:3000/api/upload",
                         onload : function() {
+                            // console.log("Done");
                             // initPasteDragImg(this);
                             // console.log('onload', this);
                             //this.fullscreen();

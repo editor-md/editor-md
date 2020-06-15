@@ -26,7 +26,7 @@
 
     /* Require.js assignment replace */
 
-    // "use strict";
+    "use strict";
 
     var $ = (typeof (jQuery) !== "undefined") ? jQuery : Zepto;
 
@@ -69,7 +69,7 @@
         ],
         mini : [
             "undo", "redo", "|",
-            "image", "file", "preview", 
+            "image", "preview", "help", "options", 
         ]
     };
 
@@ -91,10 +91,10 @@
         watch                : false,
         placeholder          : "Enjoy Markdown! use $e^x$ in Latex.",
         gotoLine             : true,
-        codeFold             : true,
+        codeFold             : false,
         autoHeight           : false,
 		autoFocus            : false,     
-        autoCloseTags        : true,
+        autoCloseTags        : false,
         searchReplace        : true,
         syncScrolling        : "single",           // true | false | "single", default true
         readOnly             : false,
@@ -495,15 +495,20 @@
             
             var initPasteDrag = function(Editor) {
                 var doc = document.getElementById(Editor.id);
+                if (!doc) return;
                 var upload = function(file) {
                     var suffix = file.type.split("/");
                     suffix = suffix[suffix.length - 1];
                     if ($.inArray(suffix, Editor.settings.imageFormats) !== -1) {
-                        Editor.uploadImg.push(file);
-                        Editor.executePlugin("imageDialog", "image-dialog/image-dialog");    
+                        if (settings.imageUpload) {
+                            Editor.uploadImg.push(file);
+                            Editor.executePlugin("imageDialog", "image-dialog/image-dialog");    
+                        }
                     } else {
-                        Editor.uploadFile.push(file);
-                        Editor.executePlugin("fileDialog", "file-dialog/file-dialog");
+                        if (settings.fileUpload) {
+                            Editor.uploadFile.push(file);
+                            Editor.executePlugin("fileDialog", "file-dialog/file-dialog");
+                        }
                     }
                 }
                 doc.addEventListener('paste', function (event) {
@@ -540,6 +545,7 @@
                     upload(file);
                 });
             };
+
             initPasteDrag(this); 
             return this;
         },
@@ -626,28 +632,36 @@
                 editormd.$CodeMirror = CodeMirror;
                 editormd.loadScript(loadPath + "codemirror/modes.min", function() {
                     editormd.loadScript(loadPath + "codemirror/addons.min", function() {
-                        var funLoad = function () {
-                            _this.setCodeMirror();
-                            if (settings.mode !== "gfm" && settings.mode !== "markdown")
-                            {
+                        editormd.loadScript(loadPath + "../js/plugins.min", function() {
+                            var funLoad = function () {
+                                _this.setCodeMirror();
+                                if (settings.mode !== "gfm" && settings.mode !== "markdown")
+                                {
+                                    _this.loadedDisplay();
+                                    return false;
+                                }
+                                _this.setToolbar();
+                                editormd.$marked = marked;
                                 _this.loadedDisplay();
-                                return false;
+                                // loadFlowChartOrSequenceDiagram();
+                            };
+
+                            if (settings.tex) {
+                                // console.log("DD");
+                                editormd.loadMathJax(loadPath);
                             }
-                            _this.setToolbar();
-                            editormd.$marked = marked;
-                            _this.loadedDisplay();
-                            // loadFlowChartOrSequenceDiagram();
-                        };
-                        if (settings.keymapMode !== "default")
-                        {
-                            editormd.loadScript(loadPath + "codemirror/keymap/" + settings.keymapMode, function() {
+    
+                            if (settings.keymapMode !== "default")
+                            {
+                                editormd.loadScript(loadPath + "codemirror/keymap/" + settings.keymapMode, function() {
+                                    funLoad();
+                                });
+                            }
+                            else
+                            {
                                 funLoad();
-                            });
-                        }
-                        else
-                        {
-                            funLoad();
-                        }
+                            }
+                        });
                     });
                 });
             });
@@ -821,7 +835,6 @@
             {
                 this.codeMirror.find(".CodeMirror-gutters").css("border-right", "none");
             }
-            
             return this;
         },
 
@@ -1586,7 +1599,7 @@
             {
                 return this;
             }
-            MathJax.typeset();
+            if (MathJax.typeset) MathJax.typeset();
             return this;
         },
 
@@ -2058,7 +2071,8 @@
             editor.data("oldWidth", editor.width()).data("oldHeight", editor.height()); // 为了兼容Zepto
 
             this.resize();
-            this.registerKeyMaps();
+            //暂时弃用键盘快捷键
+            // this.registerKeyMaps();
 
             $(window).resize(function(){
                 _this.resize();
@@ -2201,30 +2215,40 @@
 
             return this;
         },
-
         
-        rtrim : function(str, c, invert) {
+        rtrim: function(str) {
+            var sufLen = 0;
             var l = str.length;
-    
-            if (l === 0) {
-                return '';
-            } // Length of suffix matching the invert condition.
-    
-            var suffLen = 0; // Step left until we fail to match the invert condition.
-
-            while (suffLen < l) {
-                var currChar = str.charAt(l - suffLen - 1);
-    
-                if (currChar === c && !invert) {
-                    suffLen++;
-                } else if (currChar !== c && invert) {
-                    suffLen++;
+            if (l == 0) return "";
+            for (var i = l - 1; i >= 0; --i) {
+                if (str[i] == ' ') {
+                    ++sufLen;
                 } else {
                     break;
                 }
             }
-    
-            return str.substr(0, l - suffLen);
+            return str.substr(0, l - sufLen);
+        },
+
+        invMathProcess: function(md) {
+            var mds = md.split("\n");
+            var preMath = false;
+            var res = "";
+            for (var i = 0; i < mds.length; ++i) {
+                var now = mds[i];
+                if (now == '```math') {
+                    preMath = true;
+                } else if (now == '```') {
+                    if (preMath == true) {
+                        preMath = false; 
+                    } else {
+                        res += now + "\n";
+                    }
+                } else {
+                    res += now + "\n";
+                }
+            }
+            return res;
         },
 
         /**
@@ -2251,6 +2275,7 @@
             var mds = md.split('\n');
             var preBlock = false;
             var BlockContent = "";
+            var preCode = false;
             for (var i = 0; i < mds.length; ++i) {
                 var now = this.rtrim(mds[i]);
                 var BlockQuotePre = getBlockQuotePre(now);
@@ -2258,6 +2283,10 @@
                     (BlockQuotePre.length > 0 
                         && now[BlockQuotePre.length] == '$' 
                         && now[BlockQuotePre.length + 1] == '$')) {
+                    if (preCode == true) {
+                        res += now + "\n";
+                        continue;
+                    }
                     BlockContent += now + "\n";
                     if (preBlock == false) {
                         preBlock = true;
@@ -2268,8 +2297,16 @@
                         preBlock = false;
                         BlockContent = "";
                     }
+                } else if (/^```.*$/.test(now)) {
+                    res += now + "\n";
+                    preCode = !preCode;
                 } else {
                     if (preBlock == false) {
+                        if (preCode || 
+                            (now.length > 0 && now[0] == '#')) {
+                            res += now + "\n";
+                            continue;
+                        }
                         var _now = "";
                         var preInline = false;
                         var InlineContent = "";
@@ -4626,8 +4663,16 @@
     editormd.loadCSS   = function(fileName, callback, into) {
         into       = into     || "head";
         callback   = callback || function() {};
+        var id     = (fileName + ".css").replace(/[\./]+/g, "-");
+
+        if (document.getElementById(id)) {
+            editormd.loadFiles.css.push(fileName);
+            callback();
+            return;
+        }
 
         var css    = document.createElement("link");
+        css.id     = id;
         css.type   = "text/css";
         css.rel    = "stylesheet";
         css.onload = css.onreadystatechange = function() {
@@ -4660,8 +4705,14 @@
 
         into          = into     || "body";
         callback      = callback || function() {};
-        id            = id       || fileName.replace(/[\./]+/g, "-");
+        id            = id       || (fileName + ".js").replace(/[\./]+/g, "-");
         type          = type     || "text/javascript";
+
+        if (document.getElementById(id)) {
+            editormd.loadFiles.js.push(fileName);
+            callback();
+            return
+        }
 
         var script    = null;
         script        = document.createElement("script");
@@ -4720,12 +4771,12 @@
     //     });
     // };
 
-    // editormd.MathJaxURL  = {
-    //     configure : "mathjax-configure",
-    //     js  : "mathjax/es5/tex-svg"
-    // };
+    editormd.MathJaxURL  = {
+        configure : "mathjax/mathjax-configure",
+        js  : "mathjax/es5/tex-chtml-full"
+    };
 
-    // editormd.MathJaxLoaded = false;
+    editormd.MathJaxLoaded = false;
 
     /**
      * 加载MathJax文件
@@ -4734,11 +4785,13 @@
      * @param {Function} [callback=function()]  加载成功后执行的回调函数
      */
 
-    // editormd.loadMathJax = function(path, callback) {
-    //     editormd.loadScript(path + editormd.MathJaxURL.configure, function(){
-    //         editormd.loadScript(path + editormd.MathJaxURL.js, callback || function(){}, "body", "MathJax-script");
-    //     })
-    // }
+    editormd.loadMathJax = function(path, callback) {
+        editormd.loadScript(path + editormd.MathJaxURL.configure, function(){
+            editormd.loadScript(path + editormd.MathJaxURL.js, function(){
+                if (callback) callback();
+            });
+        });
+    }
 
     /**
      * 锁屏
