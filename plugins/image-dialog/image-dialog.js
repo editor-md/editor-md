@@ -116,9 +116,9 @@
                                         "<label>" + imageLang.alt + "</label>" +
                                         "<input type=\"text\" value=\"" + selection + "\" data-alt />" +
                                         "<br/>" +
-                                        "<label>" + imageLang.link + "</label>" +
-                                        "<input type=\"text\" value=\"\" data-link />" +
-                                        "<br/>" +
+                                        // "<label>" + imageLang.link + "</label>" +
+                                        // "<input type=\"text\" value=\"\" data-link />" +
+                                        // "<br/>" +
                                     ( (settings.imageUpload) ? "</form>" : "</div>");
 
                 //var imageFooterHTML = "<button class=\"" + classPrefix + "btn " + classPrefix + "image-manager-btn\" style=\"float:left;\">" + imageLang.managerButton + "</button>";
@@ -126,7 +126,7 @@
                 dialog = this.createDialog({
                     title      : imageLang.title,
                     width      : (settings.imageUpload) ? 465 : 380,
-                    height     : 254,
+                    height     : 220,
                     name       : dialogName,
                     content    : dialogContent,
                     mask       : settings.dialogShowMask,
@@ -140,7 +140,8 @@
                         enter : [lang.buttons.enter, function() {
                             var url  = this.find("[data-url]").val();
                             var alt  = this.find("[data-alt]").val();
-                            var link = this.find("[data-link]").val();
+                            var link = "";
+                            // var link = this.find("[data-link]").val();
 
                             if (url === "")
                             {
