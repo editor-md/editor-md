@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-06-15
+ * @updateTime  2020-06-16
  */
 
 @charset "UTF-8";
@@ -714,7 +714,7 @@
   background-color: #f6f8fa; }
 
 .markdown-body img {
-  max-width: 480px;
+  max-width: 100%;
   max-height: 480px;
   box-sizing: initial;
   background-color: #fff; }
