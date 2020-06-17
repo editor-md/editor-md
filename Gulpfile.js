@@ -74,6 +74,8 @@ function pluginJs() {
         "./src/lib/clipboard/clipboard.min.js",
         "./src/lib/clipboard/clipboard.use.min.js",
         "./src/lib/lazyload/lazyload.min.js",
+        // "./src/lib/zoom/transition.min.js",
+        // "./src/lib/zoom/zoom.min.js",
         "./src/lib/scriptaction/scriptaction.min.js",
     ])
     .pipe(ngModuleSort())
