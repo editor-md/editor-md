@@ -515,7 +515,9 @@
                     var items = (event.clipboardData || window.clipboardData).items;
                     var file = null;
                     if (items && items.length) {
-                        file = items[0].getAsFile();
+                        for (var i = 0; !file && i < items.length; ++i) {
+                            file = items[i].getAsFile();
+                        }
                     } 
                     if (!file) {
                         console.log("当前浏览器不支持");
@@ -539,7 +541,7 @@
                     var files = this.files || e.dataTransfer.files;
                     var file = files[0];
                     if (!file) {
-                        console.log("当前浏览器不支持");
+                        console.log("当前浏览器不支持a");
                         return;
                     }
                     upload(file);
