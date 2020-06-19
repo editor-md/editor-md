@@ -518,7 +518,7 @@
                         for (var i = 0; !file && i < items.length; ++i) {
                             file = items[i].getAsFile();
                         }
-                    } 
+                    }
                     if (!file) {
                         console.log("当前浏览器不支持");
                         return;
@@ -541,7 +541,7 @@
                     var files = this.files || e.dataTransfer.files;
                     var file = files[0];
                     if (!file) {
-                        console.log("当前浏览器不支持a");
+                        console.log("当前浏览器不支持");
                         return;
                     }
                     upload(file);

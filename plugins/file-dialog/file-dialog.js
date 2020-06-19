@@ -114,7 +114,7 @@
                             }
 
 							var altAttr = (alt !== "") ? " \"" + alt + "\"" : "";
-                            cm.replaceSelection("[" + (alt === "" ? "附件描述" : alt) + "](" + url + ")");
+                            cm.replaceSelection("\n\n[" + (alt === "" ? "附件描述" : alt) + "](" + url + ")\n\n");
                             this.hide().lockScreen(false).hideMask();
                             //删除对话框
                             this.remove();

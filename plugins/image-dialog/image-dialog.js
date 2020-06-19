@@ -153,11 +153,11 @@
 
                             if (link === "")
                             {
-                                cm.replaceSelection("![" + alt + "](" + url + altAttr + ")\n\n");
+                                cm.replaceSelection("\n\n![" + alt + "](" + url + altAttr + ")\n\n");
                             }
                             else
                             {
-                                cm.replaceSelection("[![" + alt + "](" + url + altAttr + ")](" + link + altAttr + ")\n\n");
+                                cm.replaceSelection("\n\n[![" + alt + "](" + url + altAttr + ")](" + link + altAttr + ")\n\n");
                             }
                             
                             if (alt === "") {
