@@ -133,8 +133,10 @@
 
         imageUpload          : false,
         fileUpload           : false,
-        imageFormats         : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        // imageFormats         : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        imageFormats         : ["jpg", "jpeg", "gif", "png"],
         uploadURL            : "",
+        uploadToken          : "",
         crossDomainUpload    : false,
         uploadCallbackURL    : "",
         imageLazyLoad        : false,     // 图片是否需要懒加载优化，默认为true

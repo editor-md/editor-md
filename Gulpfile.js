@@ -285,7 +285,8 @@ function build() {
 function put() {
     return gulp.src("./build/**/*").pipe(gulp.dest("./examples/editor.md")),
            gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/pc/public/editor.md")),
-           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/mobile/public/editor.md"));
+           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/mobile/public/editor.md")),
+           gulp.src("./build/**/*").pipe(gulp.dest("../wiki/pc/public/editor.md"));
 }
 
 function pluginJSMin() {

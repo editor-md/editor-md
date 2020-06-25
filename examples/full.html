@@ -130,8 +130,15 @@
 
 <script>
 
+document.addEventListener('visibilitychange', function () {
+	//  visible => 用户打开或回到当前页面  hidden => 用户离开当前页面
+	console.log(document.visibilityState); //  'visible' or 'hidden'
+});
+
 </script>
-        <script type="text/javascript">
+
+
+<script type="text/javascript">
             var testEditor;
             $(function() {
                 $.get('test.md', function(md){

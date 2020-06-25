@@ -72,6 +72,7 @@
                     $.ajax({
                         type : "POST",
                         url : action,
+                        headers:{'token' : settings.uploadToken},
                         data: fdata, 
                         cache: false,
                         contentType: false,    //不可缺
