@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-06-25
+ * @updateTime  2020-06-26
  */
 
 @charset "UTF-8";
@@ -633,7 +633,8 @@
   margin-top: 24px;
   margin-bottom: 16px;
   font-weight: 600;
-  line-height: 1.25; }
+  line-height: 1.25;
+  font-family: 'Georgia', 'serif'; }
 
 .markdown-body h1 {
   font-size: 2em; }
@@ -922,7 +923,6 @@
 
 .MathJax {
   outline: 0;
-  font-family: 'Open Sans','Helvetica Neue',"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Hiragino Kaku Gothic Pro",Meiryo,"Noto Sans CJK SC","WenQuanYi Micro Hei",Arial,Helvetica,sans-serif !important;
   overflow-x: auto !important;
   overflow-y: hidden !important; }
   .MathJax ::-webkit-scrollbar {
@@ -952,20 +952,20 @@
       background-color: rgba(0, 0, 0, 0.4); }
 
 .math-inline {
-  font-size: 1rem !important; }
+  font-size: 16px !important; }
 
 .math-block {
   font-size: 18px !important; }
 
 .editormd-preview-container, .editormd-html-preview {
   text-align: left;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.5;
   padding: 20px;
   overflow: auto;
   width: 100%;
   background-color: #fff;
-  font-family: Georgia,serif; }
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji; }
   .editormd-preview-container ::-webkit-scrollbar, .editormd-html-preview ::-webkit-scrollbar {
     height: 2px;
     width: 2px;
@@ -1139,7 +1139,6 @@ li.L9 {
 } */
 .md-clipboard:before, .md-icon, .md-nav__button, .md-nav__link:after, .md-nav__title:before, .md-search-result__article--document:before, .md-source-file:before, .markdown-body .admonition > .admonition-title:before, .markdown-body .admonition > summary:before, .markdown-body .critic.comment:before, .markdown-body .footnote-backref, .markdown-body .task-list-control .task-list-indicator:before, .markdown-body details > .admonition-title:before, .markdown-body details > summary:before, .markdown-body summary:after {
   /* font-family: Material Icons; */
-  font-family: "Meiryo UI", "Microsoft YaHei", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, "Monaco", monospace, Tahoma, STXihei, "华文细黑", STHeiti, "Helvetica Neue", "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
   font-style: normal;
   font-variant: normal;
   font-weight: 400;
