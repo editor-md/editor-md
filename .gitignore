@@ -28,3 +28,7 @@ to-html/dist/
 .DS_Store
 
 examples/editor.md
+
+# tmp
+a.js
+a.out

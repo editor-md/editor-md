@@ -3948,7 +3948,6 @@
         };
 
         markedRenderer.footNote = function(text) {
-
             if (footNoteRefReg.test(text))
             {
                 if (footNoteDefReg.test(text))

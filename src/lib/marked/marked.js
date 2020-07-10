@@ -1807,7 +1807,9 @@
 				return text;
 			}
 
-			var out = '<img src="' + href + '" alt="图片加载中..."';
+			if (text.trim() == "") text = "图片加载中..."; 
+
+			var out = '<img src="' + href + '" alt="' + text + '"';
 
 			if (this.options.imageLazyLoad === true) {
 				var loadingBase64 = this.options.imageLazyLoadLoadingICON;
@@ -1816,9 +1818,15 @@
 
 			if (title) {
 				out += ' title="' + title + '"';
+				out += ' style="border:.3em solid #e0dfcc; border-radius:1em; -webkit-border-radius:1em; -moz-border-radius: 1em;" ';
+				out += this.options.xhtml ? '/>' : '>';
+				out += '<div style="color:orange; border-bottom:1px solid #d9d9d9;display:inline-block;color:#999;padding:2px;">' + title + '</div>';
+				out = '<div style="display:flex; flex-flow: column; align-items:center; justify-content:center;">' + out + '</div>';
+			} else {
+				out += this.options.xhtml ? '/>' : '>';
 			}
 
-			out += this.options.xhtml ? '/>' : '>';
+			// out += this.options.xhtml ? '/>' : '>';
 			return out;
 		};
 

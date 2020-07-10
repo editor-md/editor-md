@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-06-26
+ * @updateTime  2020-07-10
  */
 
 @charset "UTF-8";
@@ -4349,6 +4349,45 @@ li.L9 {
 	right: auto;
 	left: .6rem
 } */
+.markdown-body {
+  --md-default-fg-color--lightest:     hsla(0, 0%, 0%, 0.07);
+  --md-accent-fg-color:                hsla(231, 99%, 66%, 1);
+  --md-default-fg-color--light:        hsla(0, 0%, 0%, 0.54); }
+  .markdown-body .tabbed-content {
+    display: none;
+    order: 99;
+    width: 100%;
+    box-shadow: 0 -0.05rem var(--md-default-fg-color--lightest);
+    padding-top: 10px; }
+    .markdown-body .tabbed-content > .tabbed-set {
+      margin: 0; }
+  .markdown-body .tabbed-set {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    margin: .1em 0;
+    border-radius: .1rem; }
+    .markdown-body .tabbed-set > input {
+      display: none; }
+      .markdown-body .tabbed-set > input:checked + label {
+        color: var(--md-accent-fg-color);
+        border-color: var(--md-accent-fg-color); }
+        .markdown-body .tabbed-set > input:checked + label + .tabbed-content {
+          display: block; }
+    .markdown-body .tabbed-set > label {
+      z-index: 1;
+      width: auto;
+      padding: .6rem 1.25em .5rem;
+      color: var(--md-default-fg-color--light);
+      font-weight: 700;
+      font-size: .64rem;
+      border-bottom: .1rem solid transparent;
+      cursor: pointer;
+      transition: color 250ms;
+      -webkit-tap-highlight-color: transparent; }
+      html .markdown-body .tabbed-set > label:hover {
+        color: var(--md-accent-fg-color); }
+
 .snippet .tooltipped {
   position: relative; }
 
