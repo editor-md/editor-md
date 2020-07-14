@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-07-10
+ * @updateTime  2020-07-14
  */
 
 @charset "UTF-8";
@@ -1854,9 +1854,6 @@ hr.editormd-page-break {
     background: none;
     border: none;
     height: 0; } }
-
-.editormd-html-preview textarea {
-  display: none; }
 
 .editormd-html-preview hr.editormd-page-break {
   background: none;
