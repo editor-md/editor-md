@@ -264,6 +264,11 @@ function cm_lib() {
     .pipe(gulp.dest(codeMirror.path.dist));
 }
 
+function copyLib() {
+    return gulp.src("./src/lib/codemirror/**/*").pipe(gulp.dest("./lib/codemirror")),
+           gulp.src("./src/lib/mathjax/**/*").pipe(gulp.dest("./lib/mathjax"));
+}
+
 function cleanBuild() {
     return gulp.src("./build").pipe(clean()),
            gulp.src("./examples/editor.md").pipe(clean());
@@ -308,7 +313,8 @@ exports.build = build;
 exports.pluginJs = pluginJs;
 exports.put = put;
 exports.pluginJSMin = pluginJSMin;
-exports.default = gulp.series(pluginJSMin, gulp.parallel(css, js, pluginJs), build, put);
+exports.copyLib = copyLib;
+exports.default = gulp.series(pluginJSMin, gulp.parallel(css, js, pluginJs), copyLib, build, put);
 
 
 

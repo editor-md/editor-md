@@ -2219,8 +2219,8 @@
 
             return this;
         },
-        
-        rtrim: function(str) {
+
+        rtrim : function(str) {
             var sufLen = 0;
             var l = str.length;
             if (l == 0) return "";
@@ -2256,92 +2256,126 @@
         },
 
         /**
-         * 调整编辑器的尺寸和布局
-         * Resize editor layout
+         * 处理mathjax
+         * 
          *
          * @param   {String}                    待处理markdown源码
          * @returns {String}                    返回处理后的Markdown源码
          */
 
         mathProcess: function(md) {
-            var getBlockQuotePre = function(md) {
+            var rtrim = str => {
+                var sufLen = 0;
+                var l = str.length;
+                if (l == 0) return "";
+                for (var i = l - 1; i >= 0; --i) {
+                    if (str[i] == ' ') {
+                        ++sufLen;
+                    } else {
+                        break;
+                    }
+                }
+                return str.substr(0, l - sufLen);
+            };
+            var getPre = s => {
                 var res = "";
-                for (var i = 0; i < md.length - 1; i += 2) {
-                    if (md[i] == '>' && md[i + 1] == ' ') {
-                        res += "> ";
+                for (var i = 0; i < s.length; ++i) {
+                    if ([" ", ">", '\t'].indexOf(s[i]) !== -1) {
+                        res += s[i];
                     } else {
                         break;
                     }
                 }
                 return res;
-            }
-            var res = "";
-            var mds = md.split('\n');
-            var preBlock = false;
-            var BlockContent = "";
-            var preCode = false;
-            for (var i = 0; i < mds.length; ++i) {
-                var now = this.rtrim(mds[i]);
-                var BlockQuotePre = getBlockQuotePre(now);
-                if (now == "$$" || 
-                    (BlockQuotePre.length > 0 
-                        && now[BlockQuotePre.length] == '$' 
-                        && now[BlockQuotePre.length + 1] == '$')) {
-                    if (preCode == true) {
-                        res += now + "\n";
-                        continue;
-                    }
-                    BlockContent += now + "\n";
-                    if (preBlock == false) {
-                        preBlock = true;
-                    } else {
-                        res += BlockQuotePre + "```math\n";
-                        res += BlockContent;
-                        res += BlockQuotePre + "```\n";
-                        preBlock = false;
-                        BlockContent = "";
-                    }
-                } else if (/^```.*$/.test(now)) {
-                    res += now + "\n";
-                    preCode = !preCode;
-                } else {
-                    if (preBlock == false) {
-                        if (preCode || 
-                            (now.length > 0 && now[0] == '#')) {
-                            res += now + "\n";
+            };
+            var addPre = (mds, pre) => {
+                return mds.map(x => pre + x);
+            };
+            var workMath = mds => {
+                var res = [];
+                var BlockContent = [];
+                var preBlock = false;
+                var preCode = false;
+                for (var i = 0; i < mds.length; ++i) {
+                    var now = rtrim(mds[i]);
+                    if (now == "$$") {
+                        if (preCode == true) {
+                            res.push(now);
                             continue;
                         }
-                        var _now = "";
-                        var preInline = false;
-                        var InlineContent = "";
-                        for (var j = 0; j < now.length; ++j) {
-                            var ch = now[j];
-                            if (ch == '$') {
-                                InlineContent += ch;
-                                if (preInline == true) {
-                                    _now += "`" + InlineContent + "`";
-                                    InlineContent = "";
-                                    preInline = false;
-                                } else {
-                                    preInline = true;
-                                }
-                            } else {
-                                if (preInline == true) {
+                        if (preBlock == false) {
+                            preBlock = true;
+                            BlockContent.push("\\[");
+                        } else {
+                            BlockContent.push("\\]");
+                            res.push("```math");
+                            res = res.concat(BlockContent);
+                            res.push("```");
+                            BlockContent = [];
+                            preBlock = false;
+                        }
+                    } else if (/^```.*$/.test(now)) {
+                        res.push(now);
+                        preCode = !preCode;
+                    } else {
+                        if (preBlock == false) {
+                            if (preCode || 
+                                (now.length > 0 && now[0] == '#')) {
+                                res.push(now);
+                                continue;
+                            }
+                            var _now = "";
+                            var preInline = false;
+                            var InlineContent = "";
+                            for (var j = 0; j < now.length; ++j) {
+                                var ch = now[j];
+                                if (ch == '$') {
                                     InlineContent += ch;
+                                    if (preInline == true) {
+                                        _now += "`" + InlineContent + "`";
+                                        InlineContent = "";
+                                        preInline = false;
+                                    } else {
+                                        preInline = true;
+                                    }
                                 } else {
-                                    _now += ch; 
+                                    if (preInline == true) {
+                                        InlineContent += ch;
+                                    } else {
+                                        _now += ch;
+                                    }
                                 }
                             }
+                            _now += InlineContent;
+                            res.push(_now);
+                        } else {
+                            BlockContent.push(now);
                         }
-                        _now += InlineContent;
-                        res += _now + "\n";
-                    } else {
-                        BlockContent += now + "\n";
                     }
                 }
-            }
-            res += BlockContent;
-            return res;
+                return res.concat(BlockContent);
+            };
+            var gao = md => {
+                var mds = md.split("\n");
+                var res = [];
+                var container = [];
+                var pre = "";
+                for (var i = 0; i < mds.length; ++i) {
+                    var now = rtrim(mds[i]);
+                    var nowPre = getPre(now);
+                    if (nowPre !== pre) {
+                        var tmp = addPre(workMath(container), pre);
+                        res = res.concat(tmp);
+                        container = [];
+                        pre = nowPre;
+                    }
+                    container.push(now.substr(pre.length, now.length - pre.length));
+                }
+                var tmp = addPre(workMath(container), pre);
+                res = res.concat(tmp);
+                return res.join("\n");
+            };
+            return gao(md);
         },
 
         /**
@@ -2414,13 +2448,13 @@
 
             //console.info("cmValue", cmValue, newMarkdownDoc);
 
-            newMarkdownDoc = editormd.filterHTMLTags(newMarkdownDoc, settings.htmlDecode);
+            newMarkdownDoc = editormd.filterHTMLTags(newMarkdownDoc, settings.htmlDecode); 
 
             //console.error("cmValue", cmValue, newMarkdownDoc);
 
             this.markdownTextarea.text(cmValue);
 
-            cm.save();
+            cm.save(); 
 
             if (settings.saveHTMLToTextarea)
             {
@@ -4125,9 +4159,9 @@
         markedRenderer.codespan = function (code) {
             var match = code.match(/^\$+([^\$\n]+?)\$+$/);
             if (match) {
-                return '<span class="math math-inline">' + code + '</span>';
+                return "<span class=\"math math-inline\">" + code + "</span>";
             } else {
-                return '<code>' + code + '</code>';
+                return "<code>" + code + "</code>";
             }
         }
 
