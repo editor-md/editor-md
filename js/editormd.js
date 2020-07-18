@@ -119,7 +119,7 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
         watch                : false,
         placeholder          : "Enjoy Markdown! use $e^x$ in Latex.",
         gotoLine             : true,
-        codeFold             : false,
+        codeFold             : true,
         autoHeight           : false,
 		autoFocus            : false,     
         autoCloseTags        : false,
@@ -129,7 +129,7 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
         tabSize              : 4,
 		indentUnit           : 4,
         lineNumbers          : true,
-		lineWrapping         : false,          // 一行超出宽度是否延伸到下一行 默认为false
+		lineWrapping         : true,          // 一行超出宽度是否延伸到下一行 默认为false
 		autoCloseBrackets    : true,
 		showTrailingSpace    : true,
 		matchBrackets        : true,
@@ -649,16 +649,16 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
 
             editormd.loadCSS(loadPath + "codemirror/codemirror.min");
 
-            if (settings.searchReplace && !settings.readOnly)
-            {
-                editormd.loadCSS(loadPath + "codemirror/addon/dialog/dialog");
-                editormd.loadCSS(loadPath + "codemirror/addon/search/matchesonscrollbar");
-            }
 
-            if (settings.codeFold)
-            {
-                editormd.loadCSS(loadPath + "codemirror/addon/fold/foldgutter");
-            }
+            //所有CSS合并了
+            // if (settings.searchReplace && !settings.readOnly) {
+            //     editormd.loadCSS(loadPath + "codemirror/addon/dialog/dialog");
+            //     editormd.loadCSS(loadPath + "codemirror/addon/search/matchesonscrollbar");
+            // }
+
+            // if (settings.codeFold) {
+            //     editormd.loadCSS(loadPath + "codemirror/addon/fold/foldgutter");
+            // }
 
             editormd.loadScript(loadPath + "codemirror/codemirror.min", function() {
                 editormd.$CodeMirror = CodeMirror;
@@ -667,8 +667,7 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
                         editormd.loadScript(loadPath + "../js/plugins.min", function() {
                             var funLoad = function () {
                                 _this.setCodeMirror();
-                                if (settings.mode !== "gfm" && settings.mode !== "markdown")
-                                {
+                                if (settings.mode !== "gfm" && settings.mode !== "markdown") {
                                     _this.loadedDisplay();
                                     return false;
                                 }
@@ -677,20 +676,14 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
                                 _this.loadedDisplay();
                                 // loadFlowChartOrSequenceDiagram();
                             };
-
                             if (settings.tex) {
-                                // console.log("DD");
                                 editormd.loadMathJax(loadPath);
                             }
-    
-                            if (settings.keymapMode !== "default")
-                            {
+                            if (settings.keymapMode !== "default") {
                                 editormd.loadScript(loadPath + "codemirror/keymap/" + settings.keymapMode, function() {
                                     funLoad();
                                 });
-                            }
-                            else
-                            {
+                            } else {
                                 funLoad();
                             }
                         });
@@ -1627,8 +1620,7 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
         // },
 
         mathjaxRender : function() {
-            if (timer === null)
-            {
+            if (timer === null) {
                 return this;
             }
             if (MathJax.typeset) MathJax.typeset();
@@ -2326,30 +2318,31 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
                 var preCode = false;
                 for (var i = 0; i < mds.length; ++i) {
                     var now = rtrim(mds[i]);
+                    var nowPre = getPre(now);
+                    now = now.substr(nowPre.length, now.length - nowPre.length);
                     if (now == "$$") {
                         if (preCode == true) {
                             res.push(now);
                             continue;
                         }
+                        BlockContent.push([nowPre, now].join(""));
                         if (preBlock == false) {
                             preBlock = true;
-                            BlockContent.push("\\[");
                         } else {
-                            BlockContent.push("\\]");
-                            res.push("```math");
+                            res.push([nowPre, "```math"].join(""));
                             res = res.concat(BlockContent);
-                            res.push("```");
+                            res.push([nowPre, "```"].join(""));
                             BlockContent = [];
                             preBlock = false;
                         }
                     } else if (/^```.*$/.test(now)) {
-                        res.push(now);
+                        res.push([nowPre, now].join(""));
                         preCode = !preCode;
                     } else {
                         if (preBlock == false) {
                             if (preCode || 
                                 (now.length > 0 && now[0] == '#')) {
-                                res.push(now);
+                                res.push([nowPre, now].join(""));
                                 continue;
                             }
                             var _now = "";
@@ -2375,35 +2368,15 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
                                 }
                             }
                             _now += InlineContent;
-                            res.push(_now);
+                            res.push([nowPre, _now].join(""));
                         } else {
-                            BlockContent.push(now);
+                            BlockContent.push([nowPre, now].join(""));
                         }
                     }
                 }
                 return res.concat(BlockContent);
             };
-            var gao = md => {
-                var mds = md.split("\n");
-                var res = [];
-                var container = [];
-                var pre = "";
-                for (var i = 0; i < mds.length; ++i) {
-                    var now = rtrim(mds[i]);
-                    var nowPre = getPre(now);
-                    if (nowPre !== pre) {
-                        var tmp = addPre(workMath(container), pre);
-                        res = res.concat(tmp);
-                        container = [];
-                        pre = nowPre;
-                    }
-                    container.push(now.substr(pre.length, now.length - pre.length));
-                }
-                var tmp = addPre(workMath(container), pre);
-                res = res.concat(tmp);
-                return res.join("\n");
-            };
-            return gao(md);
+            return workMath(md.split("\n")).join("\n");
         },
 
         /**
@@ -2471,6 +2444,8 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
 
             marked.setOptions(markedOptions);
 
+            // console.log(cmValue);
+            // console.log(this.mathProcess(cmValue));
             var newMarkdownDoc = "";
             newMarkdownDoc = editormd.$marked(this.mathProcess(cmValue), markedOptions);
 
@@ -2572,7 +2547,6 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
 
         focus : function() {
             this.cm.focus();
-
             return this;
         },
 
@@ -2801,8 +2775,7 @@ var IN_GLOBAL_SCOPE=true;window["PR_SHOULD_USE_CONTINUATION"]=true;var prettyPri
 
         getPreviewedHTML : function() {
             
-            if (!this.settings.watch) 
-            {
+            if (!this.settings.watch) {
                 this.settings.watch = true;
                 this.save();
                 this.settings.watch = false;

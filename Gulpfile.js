@@ -1,10 +1,10 @@
 // "use strict";
-
 const gulp       = require("gulp");
 const pkg        = require("./package.json");
 const sass       = require('gulp-sass');
 const dateFormat = require("js-dateFormat").dateFormat;
 const os           = require("os");
+const path         = require("path");
 const gutil        = require("gulp-util");
 const rename       = require("gulp-rename");
 const concat       = require("gulp-concat");
@@ -17,6 +17,8 @@ const babel        = require("gulp-babel");
 const order        = require("gulp-order");
 const clean        = require("gulp-clean");
 const ngModuleSort = require('gulp-ng-module-sort');
+const merge        = require('merge-stream');
+const { src } = require("gulp");
 
 pkg.name = "Dup4.Editor.md";
 pkg.today = dateFormat(new Date(), 'yyyy-mm-dd');
@@ -35,6 +37,22 @@ const headerComment = ["/*",
 					"\r\n"].join("\r\n");
 
 const headerMiniComment = "/*! <%= pkg.name %> v<%= pkg.version %> | <%= fileName(file) %> | <%= pkg.description %> | MIT License | By: <%= pkg.author %> | <%= pkg.homepage %> | <%=pkg.today %> */\r\n";
+
+function cssMini(src, dest) {
+    return gulp.src(src)
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(gulp.dest(dest))
+        .pipe(minifycss())
+        .pipe(gulp.dest(dest)) 
+}
+
+function jsMini(src, dest) {
+    return gulp.src(src)
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(gulp.dest(dest))
+        .pipe(uglify())
+        .pipe(gulp.dest(dest))
+}
 
 function scssTask(fileName, path) {
     
@@ -62,25 +80,10 @@ function scssTask(fileName, path) {
        .pipe(notify({ message: fileName + ".scss task completed!" }));
 };
 
-
 function css() {
     return scssTask("editormd"), 
            scssTask("editormd.preview"),
            scssTask("editormd.logo");
-}
-
-function pluginJs() {
-    return gulp.src([
-        "./src/lib/clipboard/clipboard.min.js",
-        "./src/lib/clipboard/clipboard.use.min.js",
-        "./src/lib/lazyload/lazyload.min.js",
-        // "./src/lib/zoom/transition.min.js",
-        // "./src/lib/zoom/zoom.min.js",
-        "./src/lib/scriptaction/scriptaction.min.js",
-    ])
-    .pipe(ngModuleSort())
-    .pipe(concat("plugins.min.js"))
-    .pipe(gulp.dest("./js")); 
 }
 
 function js() {
@@ -109,14 +112,33 @@ function js() {
     .pipe(gulp.dest("./js"));
 }
 
+function pluginJSMin() {
+    return (
+        jsMini("./src/lib/scriptaction/scriptaction.js", "./src/lib/scriptaction"),
+        // jsMini("./src/lib/lazyload/lazyload.js", "./src/lib/lazyload"),
+        jsMini("./src/lib/clipboard/clipboard.use.js", "./src/lib/clipboard"),
+        jsMini("./src/lib/marked/marked.js", "./src/lib/marked")
+    );
+}
+
+function pluginJs() {
+    return gulp.src([
+        "./src/lib/clipboard/clipboard.min.js",
+        "./src/lib/clipboard/clipboard.use.min.js",
+        "./src/lib/lazyload/lazyload.min.js",
+        // "./src/lib/zoom/transition.min.js",
+        // "./src/lib/zoom/zoom.min.js",
+        "./src/lib/scriptaction/scriptaction.min.js",
+    ])
+    .pipe(ngModuleSort())
+    .pipe(concat("plugins.min.js"))
+    .pipe(gulp.dest("./js")); 
+}
+
 const codeMirror = {
     path : {
-        src : {
-            mode : "lib/codemirror/mode",
-            addon : "lib/codemirror/addon",
-            keymap : "lib/codemirror/keymap"
-        },
-        dist : "lib/codemirror"
+        src: "./src/lib/codemirror",
+        dist : "./lib/codemirror"
     },
     modes : [
         "css",
@@ -180,15 +202,31 @@ const codeMirror = {
     ]
 };
 
+function cm_clean() {
+    return gulp.src("./lib/codemirror/*").pipe(clean());
+}
+
+function cm_copy() {
+    return merge([
+        // "addon", 
+        "keymap", 
+        // "lib", 
+        // "mode", 
+        // "theme",
+    ].map(item => {
+        return gulp.src(path.join(codeMirror.path.src, item, "**/*"))
+                   .pipe(gulp.dest(path.join(codeMirror.path.dist, item)));
+    }));
+}
+
 function cm_mode() {
-    const modes = [
-        codeMirror.path.src.mode + "/meta.js"
+    const modePath = path.join(codeMirror.path.src, "mode");
+    let modes = [
+        path.join(modePath, "meta.js")
     ];
-    for(var i in codeMirror.modes) {
-        var mode = codeMirror.modes[i];
-        modes.push(codeMirror.path.src.mode + "/" + mode + "/" + mode + ".js");
-    }
-    
+    modes = modes.concat(codeMirror.modes.map(mode => {
+        return path.join(modePath, mode, `${mode}.js`);
+    }));
     return gulp.src(modes)
                 .pipe(concat("modes.min.js"))
                 .pipe(gulp.dest(codeMirror.path.dist))
@@ -203,12 +241,11 @@ function cm_mode() {
 }
 
 function cm_addon() {
-    const addons = []
-    for(var i in codeMirror.addons) {
-        var addon = codeMirror.addons[i];
-        addons.push(codeMirror.path.src.addon + "/" + addon + ".js");
-    }
-    
+    const addonPath = path.join(codeMirror.path.src, "addon");
+    let addons = [];
+    addons = addons.concat(codeMirror.addons.map(addon => {
+        return path.join(addonPath, `${addon}.js`);
+    }));
     return gulp.src(addons)
                 .pipe(concat("addons.min.js"))
                 .pipe(gulp.dest(codeMirror.path.dist))
@@ -222,41 +259,27 @@ function cm_addon() {
                 .pipe(notify({ message: "codemirror-addon.js task complete" }));
 } 
 
-function cssMini(src, dest) {
-    return gulp.src(src)
-        .pipe(rename({ suffix: ".min" }))
-        .pipe(gulp.dest(dest))
-        .pipe(minifycss())
-        .pipe(gulp.dest(dest)) 
-}
-
-function jsMini(src, dest) {
-    return gulp.src(src)
-        .pipe(rename({ suffix: ".min" }))
-        .pipe(gulp.dest(dest))
-        .pipe(uglify())
-        .pipe(gulp.dest(dest))
-}
-
 function cm_lib() {
-    return gulp.src(["./lib/codemirror/lib/*.css", 
+    return gulp.src([
+        path.join(codeMirror.path.src, "lib/codemirror.css"),
+        path.join(codeMirror.path.src, "addon/**/*.css"),
     // "./lib/codemirror/addon/dialog/dialog.css", 
     // "./lib/codemirror/addon/search/matchesonscrollbar.css",
     // "./lib/codemirror/addon/fold/foldgutter.css"
-])
+    ])
     .pipe(concat("codemirror.min.css"))
     .pipe(gulp.dest(codeMirror.path.dist))
     .pipe(minifycss())
     .pipe(gulp.dest(codeMirror.path.dist)),
     gulp.src([
-            // "./lib/codemirror/addon/addons.min.js",
-            // "./lib/codemirror/mode/modes.min.js",
-            "./lib/codemirror/lib/codemirror.js"
+            path.join(codeMirror.path.src, "lib/codemirror.js"),
+            // path.join(codeMirror.path.dist, "addons.min.js"),
+            // path.join(codeMirror.path.dist, "modes.min.js"),
             ])
     .pipe(order([
-        // "lib/codemirror/addon/addons.min.js",
-        // "lib/codemirror/mode/modes.min.js",
-        "lib/codemirror/lib/codemirror.js"
+        path.join(codeMirror.path.src, "lib/*.js"),
+        // path.join(codeMirror.path.dist, "addons.min.js"),
+        // path.join(codeMirror.path.dist, "modes.min.js"),
     ]))
     .pipe(concat("codemirror.min.js"))
     .pipe(gulp.dest(codeMirror.path.dist))
@@ -264,15 +287,27 @@ function cm_lib() {
     .pipe(gulp.dest(codeMirror.path.dist));
 }
 
-function copyLib() {
-    return gulp.src("./src/lib/codemirror/**/*").pipe(gulp.dest("./lib/codemirror")),
-           gulp.src("./src/lib/mathjax/**/*").pipe(gulp.dest("./lib/mathjax"));
+function cm_clean_after() {
+    return gulp.src([
+        path.join(codeMirror.path.dist, "addons.min.js"),
+        path.join(codeMirror.path.dist, "modes.min.js"),
+    ]).pipe(clean());
+}
+
+function mathjax_build() {
+    return gulp.src("./src/lib/mathjax/**/*").pipe(gulp.dest("./lib/mathjax"));
 }
 
 function cleanBuild() {
-    return gulp.src("./build").pipe(clean()),
-           gulp.src("./examples/editor.md").pipe(clean());
-        //    gulp.src("../dup4.blog/client/public/editor.md").pipe(clean());
+    return merge([
+        "./build/*",
+        "./examples/editor.md/*",
+        "../dup4.blog/pc/public/editor.md/*",
+        "../dup4.blog/mobile/public/editor.md/*",
+        "../wiki/pc/public/editor.md/*",
+    ].map(item => {
+        return gulp.src(item).pipe(clean({force:true}));
+    }));
 }
 
 function build() {
@@ -288,33 +323,46 @@ function build() {
 }
 
 function put() {
-    return gulp.src("./build/**/*").pipe(gulp.dest("./examples/editor.md")),
-           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/pc/public/editor.md")),
-           gulp.src("./build/**/*").pipe(gulp.dest("../dup4.blog/mobile/public/editor.md")),
-           gulp.src("./build/**/*").pipe(gulp.dest("../wiki/pc/public/editor.md"));
+    return merge([
+        "./examples/editor.md",
+        "../dup4.blog/pc/public/editor.md",
+        "../dup4.blog/mobile/public/editor.md",
+        "../wiki/pc/public/editor.md",
+    ].map(item => {
+        return gulp.src("./build/**/*").pipe(gulp.dest(item));
+    }));
 }
 
-function pluginJSMin() {
-    return (
-        jsMini("./src/lib/scriptaction/scriptaction.js", "./src/lib/scriptaction"),
-        // jsMini("./src/lib/lazyload/lazyload.js", "./src/lib/lazyload"),
-        jsMini("./src/lib/clipboard/clipboard.use.js", "./src/lib/clipboard"),
-        jsMini("./src/lib/marked/marked.js", "./src/lib/marked")
-    );
-}
-
-exports.css = css;
-exports.js = js;
+exports.cm_clean = cm_clean;
+exports.cm_copy = cm_copy;
 exports.cm_mode = cm_mode;
 exports.cm_addon = cm_addon;
 exports.cm_lib = cm_lib;
-exports.cleanBuild = cleanBuild;
-exports.build = build;
+exports.cm_clean_after = cm_clean_after;
+exports.cm_build = gulp.series(
+    cm_clean, 
+    gulp.parallel(cm_copy, cm_mode, cm_addon), 
+    cm_lib,
+    // cm_clean_after,
+);
+
+exports.mathjax_build = mathjax_build;
+
+exports.css = css;
+exports.js = js;
 exports.pluginJs = pluginJs;
-exports.put = put;
+
+exports.cleanBuild = cleanBuild;
 exports.pluginJSMin = pluginJSMin;
-exports.copyLib = copyLib;
-exports.default = gulp.series(pluginJSMin, gulp.parallel(css, js, pluginJs), copyLib, build, put);
+exports.build = build;
+exports.put = put;
+exports.default = gulp.series(
+    cleanBuild,
+    pluginJSMin, 
+    gulp.parallel(css, js, pluginJs), 
+    build, 
+    put
+);
 
 
 

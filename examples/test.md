@@ -37,36 +37,35 @@
 
 - 具有 $n$ 个结点的 $m$ 叉树的最小高度为 $\displaystyle \lceil \log_m(n(m - 1) + 1) \rceil$。
 
-<details class = 'info' open>
-<summary>证明</summary>
+	<details class = 'info' open>
+	<summary>证明</summary>
 
-设最小高度为 $h$，那么有：
+	设最小高度为 $h$，那么有：
 
-$$
-\begin{eqnarray*}
-\frac{m^h - 1}{m - 1} \geq n
-\end{eqnarray*}
-$$
+	$$
+	\begin{eqnarray*}
+	\frac{m^h - 1}{m - 1} \geq n
+	\end{eqnarray*}
+	$$
 
-即：
+	即：
 
-$$
-\begin{eqnarray*}
-m^h \geq (n(m - 1) + 1)
-\end{eqnarray*}
-$$
+	$$
+	\begin{eqnarray*}
+	m^h \geq (n(m - 1) + 1)
+	\end{eqnarray*}
+	$$
 
+	等式两边同时取对数有：
 
-等式两边同时取对数有：
+	$$
+	\begin{eqnarray*}
+	\log_m m^h &\geq& \log_m (n(m - 1) + 1) \\
+	h &\geq& \log_m (n(m - 1) + 1)
+	\end{eqnarray*}
+	$$
 
-$$
-\begin{eqnarray*}
-\log_m m^h &\geq& \log_m (n(m - 1) + 1) \\
-h &\geq& \log_m (n(m - 1) + 1)
-\end{eqnarray*}
-$$
-
-</details>
+	</details>
 
 
 # 二叉树
@@ -107,21 +106,21 @@ $$
 
 - 非空二叉树上的叶子结点数等于度为 $2$ 的结点数 $+1$，即 $n_0 = n_2 + 1$。
 
-<details class = 'info' open>
-<summary>证明</summary>
+	<details class = 'info' open>
+	<summary>证明</summary>
 
-设 $n_0, n_1, n_2$ 分别表示度为 $0, 1, 2$ 的结点个数，那么总结点个数即 $n = n_0 + n_1 + n_2$。
-再考虑树中的结点数等于所有结点的度数 $+1$，即$n = n_1 + 2n_2 + 1$。
-所以有：
+	设 $n_0, n_1, n_2$ 分别表示度为 $0, 1, 2$ 的结点个数，那么总结点个数即 $n = n_0 + n_1 + n_2$。
+	再考虑树中的结点数等于所有结点的度数 $+1$，即$n = n_1 + 2n_2 + 1$。
+	所以有：
 
-$$
-\begin{eqnarray*}
-n_0 + n_1 + n_2 &=& n_1 + 2n_2 + 1 \\
-n_0 &=& n_2 + 1
-\end{eqnarray*}
-$$
+	$$
+	\begin{eqnarray*}
+	n_0 + n_1 + n_2 &=& n_1 + 2n_2 + 1 \\
+	n_0 &=& n_2 + 1
+	\end{eqnarray*}
+	$$
 
-</details>
+	</details>
 
 - 非空二叉树上第 $k$ 层上至多有 $2^{k - 1}$ 个结点 $(k \geq 1)$。
 - 高度为 $h$ 的二叉树至多有 $2^h - 1$ 个结点 $(h \geq 1)$。
@@ -143,22 +142,22 @@ $$
 - 链式存储结构
 	- 在含有 $n$ 个结点的二叉链表中，含有 $n + 1$ 个空链域。
 
-<details class = 'info' open>
-<summary>证明</summary>
+		<details class = 'info' open>
+		<summary>证明</summary>
 
-考虑归纳证明：
+		考虑归纳证明：
 
-显然，$1$ 个结点的时候该结论成立。
-假设 $k - 1$ 个结点的时候也成立，对于 $n = k$ 的情况：
-我们考虑 $n = k$ 的情况是基于 $n = k - 1$ 的情况，然后接一个点上去，未接之前的空链域数量为 $k$，那么加一个结点，会用掉一个空链域，再加入两个空链域，此时所剩空链域数量为：
+		显然，$1$ 个结点的时候该结论成立。
+		假设 $k - 1$ 个结点的时候也成立，对于 $n = k$ 的情况：
+		我们考虑 $n = k$ 的情况是基于 $n = k - 1$ 的情况，然后接一个点上去，未接之前的空链域数量为 $k$，那么加一个结点，会用掉一个空链域，再加入两个空链域，此时所剩空链域数量为：
 
-$$
-k - 1 + 2 = k + 1 = n + 1
-$$
+		$$
+		k - 1 + 2 = k + 1 = n + 1
+		$$
 
-得证。
+		得证。
 
-</details>
+		</details>
 
 
 
