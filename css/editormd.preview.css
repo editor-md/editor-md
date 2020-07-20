@@ -7,7 +7,7 @@
  * @license     MIT License
  * @author      Dup4
  * {@link       https://gitee.com/Dup4/Dup4.editor.md}
- * @updateTime  2020-07-18
+ * @updateTime  2020-07-20
  */
 
 @charset "UTF-8";
@@ -604,7 +604,7 @@
 .markdown-body table,
 .markdown-body ul {
   margin-top: 0;
-  margin-bottom: 16px; }
+  margin-bottom: 10px; }
 
 .markdown-body hr {
   height: .25em;
@@ -994,7 +994,7 @@
   .editormd-preview-container blockquote, .editormd-html-preview blockquote {
     color: #666;
     border-left: 4px solid #ddd;
-    padding-left: 20px;
+    padding-left: 10px;
     margin-left: 0;
     font-size: 14px; }
   .editormd-preview-container code, .editormd-html-preview code {

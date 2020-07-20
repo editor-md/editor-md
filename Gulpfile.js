@@ -1,4 +1,4 @@
-// "use strict";
+"use strict";
 const gulp       = require("gulp");
 const pkg        = require("./package.json");
 const sass       = require('gulp-sass');
@@ -12,13 +12,12 @@ const notify       = require("gulp-notify");
 const header       = require("gulp-header");
 const minifycss    = require("gulp-minify-css");
 const replace      = require("gulp-replace");
-const uglify       = require('gulp-uglify');
+const uglify       = require('gulp-uglify-es').default;
 const babel        = require("gulp-babel");
 const order        = require("gulp-order");
 const clean        = require("gulp-clean");
 const ngModuleSort = require('gulp-ng-module-sort');
 const merge        = require('merge-stream');
-const { src } = require("gulp");
 
 pkg.name = "Dup4.Editor.md";
 pkg.today = dateFormat(new Date(), 'yyyy-mm-dd');
@@ -49,7 +48,6 @@ function cssMini(src, dest) {
 function jsMini(src, dest) {
     return gulp.src(src)
         .pipe(rename({ suffix: ".min" }))
-        .pipe(gulp.dest(dest))
         .pipe(uglify())
         .pipe(gulp.dest(dest))
 }
@@ -81,9 +79,11 @@ function scssTask(fileName, path) {
 };
 
 function css() {
-    return scssTask("editormd"), 
-           scssTask("editormd.preview"),
-           scssTask("editormd.logo");
+    return merge([
+        "editormd",
+        "editormd.preview",
+        "editormd.logo",
+    ].map(fileName => scssTask(fileName)));
 }
 
 function js() {
@@ -100,25 +100,24 @@ function js() {
     }}))
     .pipe(gulp.dest("./js"))
     .pipe(rename({ suffix: ".min" }))
-    .pipe(babel({
-        presets: ['es2015'] // es5检查机制
-    }))
+    // .pipe(babel({
+    //     presets: ['es2015'] // es5检查机制
+    // }))
     .pipe(uglify())
     .pipe(gulp.dest("./js"))	
-    .pipe(header(headerMiniComment, {pkg : pkg, fileName : function(file) {
-        var name = file.path.split(file.base + ( (os.platform() === "win32") ? "\\" : "/") );
-        return name[1].replace(/[\\\/]?/, "");
-    }}))
-    .pipe(gulp.dest("./js"));
+    // .pipe(header(headerMiniComment, {pkg : pkg, fileName : function(file) {
+    //     var name = file.path.split(file.base + ( (os.platform() === "win32") ? "\\" : "/") );
+    //     return name[1].replace(/[\\\/]?/, "");
+    // }}))
+    // .pipe(gulp.dest("./js"));
 }
 
 function pluginJSMin() {
-    return (
-        jsMini("./src/lib/scriptaction/scriptaction.js", "./src/lib/scriptaction"),
-        // jsMini("./src/lib/lazyload/lazyload.js", "./src/lib/lazyload"),
-        jsMini("./src/lib/clipboard/clipboard.use.js", "./src/lib/clipboard"),
-        jsMini("./src/lib/marked/marked.js", "./src/lib/marked")
-    );
+    return merge([
+        {src:"./src/lib/scriptaction/scriptaction.js", dest:"./src/lib/scriptaction"},
+        {src:"./src/lib/clipboard/clipboard.use.js", dest:"./src/lib/clipboard"},
+        {src:"./src/lib/marked/marked.js", dest:"./src/lib/marked"},
+    ].map(item => jsMini(item.src, item.dest)));
 }
 
 function pluginJs() {
@@ -126,11 +125,10 @@ function pluginJs() {
         "./src/lib/clipboard/clipboard.min.js",
         "./src/lib/clipboard/clipboard.use.min.js",
         "./src/lib/lazyload/lazyload.min.js",
-        // "./src/lib/zoom/transition.min.js",
-        // "./src/lib/zoom/zoom.min.js",
         "./src/lib/scriptaction/scriptaction.min.js",
     ])
     .pipe(ngModuleSort())
+    .pipe(uglify())
     .pipe(concat("plugins.min.js"))
     .pipe(gulp.dest("./js")); 
 }
@@ -260,38 +258,36 @@ function cm_addon() {
 } 
 
 function cm_lib() {
-    return gulp.src([
-        path.join(codeMirror.path.src, "lib/codemirror.css"),
-        path.join(codeMirror.path.src, "addon/**/*.css"),
-    // "./lib/codemirror/addon/dialog/dialog.css", 
-    // "./lib/codemirror/addon/search/matchesonscrollbar.css",
-    // "./lib/codemirror/addon/fold/foldgutter.css"
-    ])
-    .pipe(concat("codemirror.min.css"))
-    .pipe(gulp.dest(codeMirror.path.dist))
-    .pipe(minifycss())
-    .pipe(gulp.dest(codeMirror.path.dist)),
-    gulp.src([
-            path.join(codeMirror.path.src, "lib/codemirror.js"),
-            // path.join(codeMirror.path.dist, "addons.min.js"),
-            // path.join(codeMirror.path.dist, "modes.min.js"),
-            ])
-    .pipe(order([
-        path.join(codeMirror.path.src, "lib/*.js"),
-        // path.join(codeMirror.path.dist, "addons.min.js"),
-        // path.join(codeMirror.path.dist, "modes.min.js"),
-    ]))
-    .pipe(concat("codemirror.min.js"))
-    .pipe(gulp.dest(codeMirror.path.dist))
-    .pipe(uglify())
-    .pipe(gulp.dest(codeMirror.path.dist));
+    return merge([
+        gulp.src([
+            path.join(codeMirror.path.src, "lib/codemirror.css"),
+            path.join(codeMirror.path.src, "addon/**/*.css"),
+        // "./lib/codemirror/addon/dialog/dialog.css", 
+        // "./lib/codemirror/addon/search/matchesonscrollbar.css",
+        // "./lib/codemirror/addon/fold/foldgutter.css"
+        ])
+        .pipe(concat("codemirror.min.css"))
+        .pipe(gulp.dest(codeMirror.path.dist))
+        .pipe(minifycss())
+        .pipe(gulp.dest(codeMirror.path.dist)),
+        gulp.src([
+                path.join(codeMirror.path.src, "lib/codemirror.js"),
+                path.join(codeMirror.path.dist, "addons.min.js"),
+                path.join(codeMirror.path.dist, "modes.min.js"),
+        ])
+        .pipe(ngModuleSort())
+        .pipe(concat("codemirror.min.js"))
+        .pipe(gulp.dest(codeMirror.path.dist))
+        .pipe(uglify())
+        .pipe(gulp.dest(codeMirror.path.dist)),
+    ]);
 }
 
 function cm_clean_after() {
     return gulp.src([
         path.join(codeMirror.path.dist, "addons.min.js"),
         path.join(codeMirror.path.dist, "modes.min.js"),
-    ]).pipe(clean());
+    ]).pipe(clean({force:true}));
 }
 
 function mathjax_build() {
@@ -343,7 +339,7 @@ exports.cm_build = gulp.series(
     cm_clean, 
     gulp.parallel(cm_copy, cm_mode, cm_addon), 
     cm_lib,
-    // cm_clean_after,
+    cm_clean_after,
 );
 
 exports.mathjax_build = mathjax_build;

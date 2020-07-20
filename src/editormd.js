@@ -65,7 +65,7 @@
             "undo", "redo", "|",
             "bold", "del", "italic", "quote", "table", "image", "file", "|",
             "watch", "preview", "fullscreen", "|",
-            "help", "options"
+            "extend_html", "help", "options"
         ],
         mini : [
             "undo", "redo", "|",
@@ -220,6 +220,7 @@
             help             : "fa-question-circle",
             info             : "fa-info-circle",
             options          : "fa-gear",
+            extend_html      : "fa-th-large",
         },
         toolbarIconTexts     : {},
 
@@ -267,7 +268,8 @@
                 search           : "搜索",
                 help             : "使用帮助",
                 info             : "关于" + editormd.title,
-                options          : "编辑器配置"
+                options          : "编辑器配置",
+                extend_html      : "扩展语法",
             },
             buttons : {
                 enter  : "确定",
@@ -634,8 +636,8 @@
 
             editormd.loadScript(loadPath + "codemirror/codemirror.min", function() {
                 editormd.$CodeMirror = CodeMirror;
-                editormd.loadScript(loadPath + "codemirror/modes.min", function() {
-                    editormd.loadScript(loadPath + "codemirror/addons.min", function() {
+                // editormd.loadScript(loadPath + "codemirror/modes.min", function() {
+                    // editormd.loadScript(loadPath + "codemirror/addons.min", function() {
                         editormd.loadScript(loadPath + "../js/plugins.min", function() {
                             var funLoad = function () {
                                 _this.setCodeMirror();
@@ -660,8 +662,8 @@
                             }
                         });
                     });
-                });
-            });
+                // });
+            // });
 
             return this;
         },
@@ -3625,6 +3627,11 @@
 
         options : function() {
             this.executePlugin("optionsDialog", "options-dialog/options-dialog");
+        },
+
+        extend_html : function() {
+            // this.executePlugin("optionsDialog", "options-dialog/options-dialog");
+            this.executePlugin("extendHtmlDialog", "extend-html-dialog/extend-html-dialog");
         }
     };
 
