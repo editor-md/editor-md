@@ -2,9 +2,9 @@
 
 
 MathJax = {
-    loader: {
-        load: ['input/tex-full', 'output/svg', 'ui/menu', '[tex]/require']
-      },
+    // loader: {
+    //     load: ['input/tex-full', 'output/svg', 'ui/menu', '[tex]/require']
+    //   },
     tex: {
       inlineMath: [
         // ['\\(', '\\)'],
@@ -14,6 +14,11 @@ MathJax = {
         // ['\\[', '\\]'],
         ['$$', '$$'],
       ],
+    },
+    options: {
+      // skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre','code', 'a', 'annotation', 'annotation-xml'],
+      ignoreHtmlClass: 'tex_ignore|editormd-html-preview',
+      processHtmlClass: "editormd-preview-container",
     },
     startup: {
         ready: () => {
