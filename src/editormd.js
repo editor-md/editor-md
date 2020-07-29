@@ -2774,7 +2774,7 @@
                 });
             }
             var reg = new RegExp(window.location.origin, "g");
-            return $('#MJX-CHTML-styles').prop("outerHTML").replace(reg, this.settings.texTargetUrl) + "\n" + this.previewContainer.html();
+            return $('#MJX-CHTML-styles').prop("outerHTML").replace(reg, this.settings.texTargetUrl) + "\n" + this.previewContainer.html().replace(/(MJXZERO, )+/g, "MJXZERO, ");
         },
 
         /**
