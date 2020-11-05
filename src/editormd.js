@@ -1,5 +1,5 @@
 ;(function(factory) {
-    // "use strict";
+    "use strict";
 
 	// CommonJS/Node.js
 	if (typeof require === "function" && typeof exports === "object" && typeof module === "object")
@@ -46,9 +46,9 @@
         return new editormd.fn.init(id, options);
     };
 
-    editormd.title        = editormd.$name = "Editor.md";
+    editormd.title        = editormd.$name = "Editor-md";
     editormd.version      = "2.0.0";
-    editormd.homePage     = "https://pandao.github.io/editor.md/";
+    editormd.homePage     = "https://github.com/Editor-md/Editor-md";
     editormd.classPrefix  = "editormd-";
 
     editormd.toolbarModes = {

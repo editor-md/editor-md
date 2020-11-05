@@ -26,9 +26,6 @@ to-html/dist/
 
 # Mac OS
 .DS_Store
+.vscode/
 
 examples/editor.md
-
-# tmp
-a.js
-a.out

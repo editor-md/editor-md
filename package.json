@@ -1,5 +1,5 @@
 {
-  "name": "dup4.editor.md",
+  "name": "editor-md",
   "version": "2.0.0",
   "description": "Open source online markdown editor.",
   "directories": {
@@ -8,23 +8,24 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node node_modules/http-server/bin/http-server -p 3030 examples/"
   },
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/Dup4/Dup4.editor.md.git"
+    "url": "https://github.com/Editor-md/Editor-md.git"
   },
   "keywords": [
-    "editor.md",
+    "editor-md",
     "markdown",
     "editor"
   ],
   "author": "Dup4",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitee.com/Dup4/Dup4.editor.md/issues"
+    "url": "https://github.com/Editor-md/Editor-md.git/issues"
   },
-  "homepage": "https://gitee.com/Dup4/Dup4.editor.md",
+  "homepage": "https://github.com/Editor-md/Editor-md",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.24.1",
@@ -44,13 +45,12 @@
     "gulp-replace": "^1.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-uglify": "^3.0.2",
-    "gulp-util": "^3.0.8",
-    "js-dateformat": "^0.9.7",
-    "node-sass": "^4.14.1"
-  },
-  "dependencies": {
     "gulp-uglify-es": "^2.0.0",
+    "gulp-util": "^3.0.8",
+    "http-server": "^0.12.3",
+    "js-dateformat": "^0.9.7",
     "merge-stream": "^2.0.0",
+    "node-sass": "^4.14.1",
     "path": "^0.12.7"
   }
 }

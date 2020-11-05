@@ -19,7 +19,7 @@ const clean        = require("gulp-clean");
 const ngModuleSort = require('gulp-ng-module-sort');
 const merge        = require('merge-stream');
 
-pkg.name = "Dup4.Editor.md";
+pkg.name = "Editor-md";
 pkg.today = dateFormat(new Date(), 'yyyy-mm-dd');
 
 const headerComment = ["/*", 
@@ -357,7 +357,7 @@ exports.default = gulp.series(
     pluginJSMin, 
     gulp.parallel(css, js, pluginJs), 
     build, 
-    put
+    // put
 );
 
 
