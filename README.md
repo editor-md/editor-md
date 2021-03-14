@@ -1,6 +1,10 @@
 # Editor.md
 
-![](https://pandao.github.io/editor.md/images/logos/editormd-logo-180x180.png)
+<p align="center">
+
+<img src="https://pandao.github.io/editor.md/images/logos/editormd-logo-180x180.png" />
+
+</p>
 
 ![](https://img.shields.io/github/stars/pandao/editor.md.svg)
 ![](https://img.shields.io/github/forks/pandao/editor.md.svg)
